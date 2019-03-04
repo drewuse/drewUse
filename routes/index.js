@@ -6,4 +6,15 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'DrewUse'});
 });
 
+//get Request example
+router.get('/test/:id', function(req,res, next){
+  res.render('test', {output:req.params.id});
+});
+
+//post request example
+router.post('/test/submit', function(req,res,next){
+  var id= req.body.id;
+  res.redirect("/test/"+ id);
+});
+
 module.exports = router;
