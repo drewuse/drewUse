@@ -1,8 +1,18 @@
-body {
+/* body {
   padding: 50px;
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
-}
+} */
 
 a {
-  color: #00B7FF;
+  font: 25px "Lucida Grande";
+  color: white;
+}
+
+#icon{
+  color: white;
+  font-size: 30px;
+  margin-right:10px
+}
+#sellButton{
+  margin-right:20px;
 }
