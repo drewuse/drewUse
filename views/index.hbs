@@ -1,2 +1,18 @@
-<h1>{{title}}</h1>
-<p>Welcome to HomePage</p>
+<br>
+<h2>Listings</h2>
+    <div class="row">
+        {{# each items }}
+        <div class="col-sm-3" style="margin-top:20px">
+          <img src="" class="card-img-top" alt="..." style="height:10vw;">
+          <div class="card" >
+            <div class="card-body">
+              <h5 class="card-title">{{ this.title }}</h5>
+              <p class="card-text">{{ this.description }}</p>
+              <a href="#" class="btn btn-primary">${{ this.price }}</a>
+              <p class="card-text">{{ this._id }}</p>
+              <p class="card-text">{{ this.datePostedComputed }}</p>
+            </div>
+          </div>
+        </div>
+        {{/each}}
+    </div>
