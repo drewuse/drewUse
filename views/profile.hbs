@@ -2,7 +2,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-4">
-        <div class="card mb-3" style="height:20vw;">
+        <div class="card mb-3" style="height:25vw;">
         <img src="..." class="card-img-top" alt="...">
         <div class="card-body">
           <h5 class="card-title">Card title</h5>
@@ -27,16 +27,42 @@
         <img src="..." class="card-img" alt="...">
       </div>
       <div class="col-md-8">
+        <!-- <form action="/profile/deleteItem" method="post"> -->
         <div class="card-body">
-          <h5 class="card-title">{{ this.title }}</h5>
-          <p class="card-text">{{ this.description }}</p>
-          <a href="#" class="btn btn-primary">${{ this.price }}</a>
-          <p class="card-text">{{ this._id }}</p>
-          <p class="card-text">{{ this.datePostedComputed }}</p>
+            <h5 class="card-title" name="title">{{ this.title }}</h5>
+            <p class="card-text" name="description">{{ this.description }}</p>
+            <a name="price">Price: ${{ this.price }}</a>
+            <p class="card-text" name="datePostedComputed">Date Posted: {{ this.datePostedComputed }}</p>
+            <!-- <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">Delete</a> -->
+            <a href="/profile/deleteItem/{{ this._id }}" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger">Delete</button></a>
         </div>
+          <!-- </form> -->
       </div>
     </div>
   </div>
   {{/each}}
 </div>
+</div>
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Confirmation</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        Are you sure you want to delete this?
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <form action="/profile/deleteItem" method="POST" novalidate>
+          <input type="hidden" name="Id" class="hiddenValue" value="" />
+          <button type="submit" class="btn btn-danger">Yes</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div> -->
 </div>

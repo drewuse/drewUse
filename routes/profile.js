@@ -10,23 +10,23 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
   // extends to get request and post request to listings
 
 /* gets profile page.(render posting owned by user and user profile)*/
-  router.get('/', function(req, res, next) {
-    itemData.find().sort( { datePosted: -1 } )
-      .then(function(doc) {
-        res.render('profile', { title: 'DrewUse', items:doc});
-      });
-  });
-
-
-// render the postings owned by user (rendering all for now since there is no login)
-
+router.get('/', function(req, res, next) {
+  itemData.find().sort( { datePosted: -1 } )
+    .then(function(doc) {
+      res.render('profile', { title: 'DrewUse', items:doc});
+    });
+});
 
 // render user
 
 
 
 // post request to delete listings
-
+router.get('/deleteItem/:id', function(req,res,next){
+    var id = req.params.id;
+    itemData.findByIdAndRemove(id).exec();
+    res.redirect('/profile');
+});
 
 
 // post request to edit listings
