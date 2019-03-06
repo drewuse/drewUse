@@ -1,2 +1,42 @@
-<h1>{{title}}</h1>
-<p>Welcome to Profile</p>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-4">
+        <div class="card mb-3" style="height:20vw;">
+        <img src="..." class="card-img-top" alt="...">
+        <div class="card-body">
+          <h5 class="card-title">Card title</h5>
+          <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+        <ul class="list-group list-group-flush">
+          <li class="list-group-item">Cras justo odio</li>
+          <li class="list-group-item">Dapibus ac facilisis in</li>
+          <li class="list-group-item">Vestibulum at eros</li>
+        </ul>
+        <div class="card-body">
+          <a href="#" class="card-link">Card link</a>
+          <a href="#" class="card-link">Another link</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-8">
+    {{# each items }}
+    <div class="card mb-3" style="height:20vw;">
+    <div class="row no-gutters">
+      <div class="col-md-3">
+        <img src="..." class="card-img" alt="...">
+      </div>
+      <div class="col-md-8">
+        <div class="card-body">
+          <h5 class="card-title">{{ this.title }}</h5>
+          <p class="card-text">{{ this.description }}</p>
+          <a href="#" class="btn btn-primary">${{ this.price }}</a>
+          <p class="card-text">{{ this._id }}</p>
+          <p class="card-text">{{ this.datePostedComputed }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  {{/each}}
+</div>
+</div>
