@@ -4,8 +4,17 @@ var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
 var Long = require('mongodb').Long;
 var current_millies = new Date().getTime();
+var options = require('../options');
 
-mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
+var dbLoginData={
+  username: options.storageConfig.username,
+  password: options.storageConfig.password
+}
+
+var dbConnect='mongodb://'+dbLoginData.username+':'+dbLoginData.password+"@ds127802.mlab.com:27802/"+dbLoginData.username;
+
+
+mongoose.connect(dbConnect);
 
 
 /* get sellers page. */
