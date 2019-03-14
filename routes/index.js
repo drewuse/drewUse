@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
-var options = require('../options');
+// var options = require('../options');
 
 // var dbLoginData={
 //   username: options.storageConfig.username,

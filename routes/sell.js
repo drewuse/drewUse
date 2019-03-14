@@ -4,7 +4,7 @@ var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
 var Long = require('mongodb').Long;
 var current_millies = new Date().getTime();
-var options = require('../options');
+// var options = require('../options');
 
 // var dbLoginData={
 //   username: options.storageConfig.username,
