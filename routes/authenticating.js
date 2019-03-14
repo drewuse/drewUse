@@ -7,8 +7,8 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 // Set up passport strategy
 passport.use(new GoogleStrategy(
   {
-    clientID: process.env.GOOGLE_OAUTH_TEST_APP_CLIENT_ID,
-    clientSecret: process.env.GOOGLE_OAUTH_TEST_APP_CLIENT_SECRET,
+    clientID: '174920512610-2pbh1jrusvbg79p86fndi1nkuf104i8q.apps.googleusercontent.com',
+    clientSecret: '5rpSupc69NVmSdKyf7ALetV5',
     callbackURL: 'https://drewuse.herokuapp.com/auth/google/callback',
     scope: ['email'],
   },
