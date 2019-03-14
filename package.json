@@ -16,6 +16,8 @@
     "mongodb": "^3.1.13",
     "mongoose": "^5.4.17",
     "morgan": "~1.9.0",
+    "passport": "^0.4.0",
+    "passport-google-oauth20": "^2.0.0",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
     "reactstrap": "^7.1.0"
