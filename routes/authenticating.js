@@ -20,7 +20,7 @@ passport.use(new GoogleStrategy(
 ));
 
 /* GET google auth . */
-router.get('/auth/google/callback',
+router.get('/',
   passport.authenticate('google', { failureRedirect: '/', session: false }),
   (req, res) => {
     console.log('wooo we authenticated, here is our user object:', req.user);

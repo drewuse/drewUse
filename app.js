@@ -33,7 +33,7 @@ app.use(expressSession({secret:'max', saveUninitialized:false, resave:false}))
 app.use('/', indexRouter);
 app.use('/sell', sellRouter);
 app.use('/profile', profileRouter);
-app.use('/authenticating', googleAuthRouter)
+app.use('/auth/google/callback', googleAuthRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
