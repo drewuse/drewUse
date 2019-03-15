@@ -33,8 +33,10 @@ const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'listingImages'
 });
-const parser = multer({ storage: storage });
-const multerMiddleware = parser.single('image');
+// var uploadParser = mul
+// const fieldsParser = multer();
+const imageParser = multer({ storage: storage });
+// const multerMiddleware = parser.single('image');
 
 /* get sellers page. */
 router.get('/', function(req, res, next) {
@@ -42,7 +44,7 @@ router.get('/', function(req, res, next) {
 });
 
 // post request to create listings
-router.post('/insert' /* multerMiddleware /* this middleware processes the image, adds it to cloudinary, and sends the access parameters in the req object */ , (req, res) => {
+router.post('/insert', imageParser.single('image'),  /* this middleware processes the image, adds it to cloudinary, and sends the access parameters in the req object */ (req, res) => {
   var current_timestamp = Long.fromNumber(current_millies);
   var date = new Date(current_millies);
   var dateReadable = date.toString();
@@ -53,8 +55,8 @@ router.post('/insert' /* multerMiddleware /* this middleware processes the image
     datePosted: current_timestamp,
     datePostedComputed: dateReadable,
     // TODO: Add support for multiple images
-    // image_url: req.file.url, 
-    // image_public_id: req.file.public_id,
+    image_url: req.file.url, 
+    image_public_id: req.file.public_id,
     // imgs:[{
     //   url: req.file.url,
     //   public_id: req.file.public_id,
