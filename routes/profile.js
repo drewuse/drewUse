@@ -28,14 +28,12 @@ router.get('/deleteItem/:id', function(req,res,next){
 
 router.get('/modifyItem/:id', function(req,res,next){
     var item={
-      sold: True
+      sold: true
     };
     var id = req.params.id;
-    itemData.findById(id).updateOne({$set:item},function(err, result) {
-      assert.equal(null, err);
+    itemData.updateOne({ _id: id}, {$set:{sold:true}}).exec();
       console.log('Item updated');
       res.redirect('/profile');
-    });
 });
 
 router.get('/validatingUser', function(req,res,next){
