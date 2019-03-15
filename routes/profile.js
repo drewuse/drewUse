@@ -3,34 +3,21 @@ var router = express.Router();
 var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
 var profileData = require('../models/profileModel');
-// var options = require('../options');
-
-// var dbLoginData={
-//   username: options.storageConfig.username,
-//   password: options.storageConfig.password
-// }
-//
-// var dbConnect='mongodb://'+dbLoginData.username+':'+dbLoginData.password+"@ds127802.mlab.com:27802/"+dbLoginData.username;
+var authenticate = require('./authenticating');
 
 
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
 
-
-
 // get request from profile
   // extends to get request and post request to listings
-
 /* gets profile page.(render posting owned by user and user profile)*/
-router.get('/', function(req, res, next) {
+router.get('/',checkAuthentication, function(req, res, next) {
   itemData.find().sort( { datePosted: -1 } )
     .then(function(doc) {
-      res.render('profile', { title: 'DrewUse', items:doc});
+      res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
     });
+    console.log("You have accessed the protected endpoint!", req.session);
 });
-
-// render user
-
-
 
 // post request to delete listings
 router.get('/deleteItem/:id', function(req,res,next){
@@ -38,8 +25,17 @@ router.get('/deleteItem/:id', function(req,res,next){
     itemData.findByIdAndRemove(id).exec();
     res.redirect('/profile');
 });
-
-
+//authenticate a user is logged in
+function checkAuthentication(req,res,next){
+    if(req.isAuthenticated()){
+        //req.isAuthenticated() will return true if user is logged in
+        next();
+    } else{
+      res.status(403).json({
+       message: 'must be logged in to continue',
+     });
+    }
+}
 // post request to edit listings
 
 

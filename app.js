@@ -11,7 +11,7 @@ var googleAuthRouter = require('./routes/authenticating')
 
 var hbs = require('express-handlebars');
 var expressValidator = require('express-validator');
-var expressSession = require('express-session');
+const expressSession = require('express-session');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
@@ -25,10 +25,18 @@ app.set('view engine', 'hbs');
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
-app.use(expressValidator());
+// app.use(expressValidator());
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(expressSession({secret:'max', saveUninitialized:false, resave:false}))
+// app.use(expressSession({secret:'max', saveUninitialized:false, resave:false}));
+app.use(expressSession({
+  secret: process.env.SESSION_SECRET || 'default_session_secret',
+  resave: false,
+  saveUninitialized: false,
+}));
+app.use(passport.initialize());
+app.use(passport.session());
+
 
 app.use('/', indexRouter);
 app.use('/sell', sellRouter);
@@ -50,5 +58,8 @@ app.use(function(err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
+
+
+
 
 module.exports = app;
