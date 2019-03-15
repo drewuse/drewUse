@@ -20,14 +20,10 @@ var itemDataSchema= new Schema({
   dateSold: Date,
   boughtBy: String,
   transactionDate: Date,
-<<<<<<< HEAD
   priceSoldAt: Number,
   sold: Boolean
 },{collection:'listings'});
-=======
-  priceSoldAt: Number
-}, {collection:'listings'});
->>>>>>> da5053bb9ed16663710a5f6a9d0a8058e7ec6809
+
 
 var itemData = mongoose.model('itemData', itemDataSchema);
 
