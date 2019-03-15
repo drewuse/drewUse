@@ -12,7 +12,8 @@ var itemDataSchema= new Schema({
   postedBy: String,
   boughtBy: String,
   transactionDate: Date,
-  priceSoldAt: Number
+  priceSoldAt: Number,
+  sold: Boolean
 },{collection:'listings'});
 
 var itemData = mongoose.model('itemData', itemDataSchema);

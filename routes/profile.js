@@ -26,6 +26,18 @@ router.get('/deleteItem/:id', function(req,res,next){
     res.redirect('/profile');
 });
 
+router.get('/modifyItem/:id', function(req,res,next){
+    var item={
+      sold: True
+    };
+    var id = req.params.id;
+    itemData.findById(id).updateOne({$set:item},function(err, result) {
+      assert.equal(null, err);
+      console.log('Item updated');
+      res.redirect('/profile');
+    });
+});
+
 router.get('/validatingUser', function(req,res,next){
   console.log(req.session.passport.user._json.email);
   profileData.count({ email: req.session.passport.user._json.email })

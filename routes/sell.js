@@ -38,7 +38,8 @@ router.post('/insert', function(req, res, next) {
     postedBy: req.session.passport.user._json.email,
     boughtBy: null,
     transactionDate: null,
-    priceSoldAt: null
+    priceSoldAt: null,
+    sold: false
   };
   var data = new itemData(item);
   data.save();
