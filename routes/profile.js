@@ -16,7 +16,7 @@ router.get('/',checkAuthentication, function(req, res, next) {
     .then(function(doc) {
       res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
     });
-    console.log("You have accessed the protected endpoint!", req.session);
+    console.log("You have accessed the protected endpoint!");
 });
 
 // post request to delete listings
@@ -25,6 +25,20 @@ router.get('/deleteItem/:id', function(req,res,next){
     itemData.findByIdAndRemove(id).exec();
     res.redirect('/profile');
 });
+
+router.get('/validatingUser', function(req,res,next){
+  console.log(req.session.passport.user._json.email);
+  profileData.count({ email: req.session.passport.user._json.email })
+  .then((count) => {
+    if (count > 0) {
+      console.log('Email exists.');
+    } else {
+      console.log('Email does not exist.');
+
+    }
+  });
+});
+
 //authenticate a user is logged in
 function checkAuthentication(req,res,next){
     if(req.isAuthenticated()){

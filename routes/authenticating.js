@@ -5,7 +5,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
-
 passport.serializeUser((user, done) => {
   done(null, user);
 });
@@ -33,10 +32,11 @@ passport.use(new GoogleStrategy(
 router.get('/',
   passport.authenticate('google', { failureRedirect: '/', session: true }),
   (req, res) => {
-    console.log('wooo we authenticated, here is our user object:', req.user);
-    res.redirect('/');
-    // res.json(req.user);
-  }
+    console.log('wooo we authenticated, here is our user object:');
+    // let user = profileData.findOne({"email": req.session.passport.user._json.email});
+
+  res.redirect("/profile/validatingUser");
+}
 );
 
 

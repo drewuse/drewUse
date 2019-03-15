@@ -18,7 +18,7 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
 
 
 /* get sellers page. */
-router.get('/', function(req, res, next) {
+router.get('/', checkAuthentication, function(req, res, next) {
   res.render('sell', {title: 'DrewUse'});
 });
 
@@ -39,5 +39,17 @@ router.post('/insert', function(req, res, next) {
 
   res.redirect('/');
 });
+
+//authenticate a user is logged in
+function checkAuthentication(req,res,next){
+    if(req.isAuthenticated()){
+        //req.isAuthenticated() will return true if user is logged in
+        next();
+    } else{
+      res.status(403).json({
+       message: 'must be logged in to continue',
+     });
+    }
+}
 
 module.exports = router;
