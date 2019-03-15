@@ -12,7 +12,7 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
   // extends to get request and post request to listings
 /* gets profile page.(render posting owned by user and user profile)*/
 router.get('/',checkAuthentication, function(req, res, next) {
-  itemData.find().sort( { datePosted: -1 } )
+  itemData.find({postedBy:req.session.passport.user._json.email}).sort( { datePosted: -1 } )
     .then(function(doc) {
       res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
     });
@@ -32,9 +32,10 @@ router.get('/validatingUser', function(req,res,next){
   .then((count) => {
     if (count > 0) {
       console.log('Email exists.');
+      res.redirect('/');
     } else {
       console.log('Email does not exist.');
-
+      res.redirect('/');
     }
   });
 });

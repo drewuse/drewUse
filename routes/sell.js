@@ -29,10 +29,16 @@ router.post('/insert', function(req, res, next) {
   var dateReadable = date.toString();
   var item = {
     title: req.body.title,
-    price: req.body.price,
     description: req.body.description,
+    price: req.body.price,
+    imgs: null,
     datePosted: current_timestamp,
-    datePostedComputed: dateReadable
+    datePostedComputed: dateReadable,
+    dateSold: null,
+    postedBy: req.session.passport.user._json.email,
+    boughtBy: null,
+    transactionDate: null,
+    priceSoldAt: null
   };
   var data = new itemData(item);
   data.save();
