@@ -30,7 +30,7 @@ passport.use(new GoogleStrategy(
 
 /* GET google auth . */
 router.get('/',
-  passport.authenticate('google', { failureRedirect: '/', session: true }),
+  passport.authenticate('google', { failureRedirect: '/', session: true, hd: 'drew.edu' }),
   (req, res) => {
     console.log('wooo we authenticated, here is our user object:');
     // let user = profileData.findOne({"email": req.session.passport.user._json.email});

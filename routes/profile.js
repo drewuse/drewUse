@@ -58,9 +58,7 @@ function checkAuthentication(req,res,next){
         //req.isAuthenticated() will return true if user is logged in
         next();
     } else{
-      res.status(403).json({
-       message: 'must be logged in to continue',
-     });
+      res.redirect('/auth/google/callback')
     }
 }
 // post request to edit listings
