@@ -42,9 +42,12 @@ router.get('/validatingUser', function(req,res,next){
   .then((count) => {
     if (count > 0) {
       console.log('Email exists.');
-      res.redirect('/');
     } else {
       console.log('Email does not exist.');
+    }
+    try {
+      res.redirect(`/${req.session.authorigin}`);
+    } catch (ReferenceError) {
       res.redirect('/');
     }
   });
@@ -57,6 +60,7 @@ function checkAuthentication(req,res,next){
         //req.isAuthenticated() will return true if user is logged in
         next();
     } else{
+      req.session.authorigin = 'profile';
       res.redirect('/auth/google/callback')
     }
 }
