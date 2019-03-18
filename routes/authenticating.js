@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
 const passport = require('passport');
+var profileData = require('../models/profileModel');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
@@ -23,7 +24,7 @@ passport.use(new GoogleStrategy(
   },
   // This is a "verify" function required by all Passport strategies
   (accessToken, refreshToken, profile, cb) => {
-    console.log('Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:', profile);
+    // console.log('Our user authenticated with Google, and Google sent us back this profile info identifying the authenticated user:', profile);
     return cb(null, profile);
   },
 ));
@@ -35,9 +36,27 @@ router.get('/',
     console.log('wooo we authenticated, here is our user object:');
     // let user = profileData.findOne({"email": req.session.passport.user._json.email});
 
-  res.redirect("/profile/validatingUser");
+  res.redirect("/auth/google/callback/validateUser");
 }
 );
+
+router.get('/validateUser', function(req,res,next){
+  console.log(req.session.passport.user._json.email);
+  profileData.count({ email: req.session.passport.user._json.email })
+  .then((count) => {
+    if (count > 0) {
+      console.log('Email exists.');
+    } else {
+      console.log('Email does not exist.');
+    }
+    console.log(req.session.authorigin);
+    if (typeof req.session.authorigin !== 'undefined') {
+      res.redirect(`/${req.session.authorigin}`);
+    } else {
+      res.redirect('/');
+    }
+  });
+});
 
 
 module.exports = router;

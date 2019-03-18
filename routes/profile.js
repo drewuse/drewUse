@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
-var profileData = require('../models/profileModel');
 var authenticate = require('./authenticating');
 
 
@@ -34,23 +33,6 @@ router.get('/modifyItem/:id', function(req,res,next){
     itemData.updateOne({ _id: id}, {$set:{sold:true}}).exec();
       console.log('Item updated');
       res.redirect('/profile');
-});
-
-router.get('/validatingUser', function(req,res,next){
-  console.log(req.session.passport.user._json.email);
-  profileData.count({ email: req.session.passport.user._json.email })
-  .then((count) => {
-    if (count > 0) {
-      console.log('Email exists.');
-    } else {
-      console.log('Email does not exist.');
-    }
-    try {
-      res.redirect(`/${req.session.authorigin}`);
-    } catch (ReferenceError) {
-      res.redirect('/');
-    }
-  });
 });
 
 //authenticate a user is logged in
