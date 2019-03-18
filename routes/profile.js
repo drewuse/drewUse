@@ -52,6 +52,7 @@ router.get('/validatingUser', function(req,res,next){
 
 //authenticate a user is logged in
 function checkAuthentication(req,res,next){
+    console.log(req.isAuthenticated());
     if(req.isAuthenticated()){
         //req.isAuthenticated() will return true if user is logged in
         next();
