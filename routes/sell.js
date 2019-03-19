@@ -33,10 +33,8 @@ const storage = cloudinaryStorage({
   cloudinary: cloudinary,
   folder: 'listingImages'
 });
-// var uploadParser = mul
-// const fieldsParser = multer();
+
 const imageParser = multer({ storage: storage });
-// const multerMiddleware = parser.single('image');
 
 /* get sellers page. */
 router.get('/', checkAuthentication, function(req, res, next) {
