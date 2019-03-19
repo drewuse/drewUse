@@ -19,7 +19,7 @@ passport.use(new GoogleStrategy(
     clientID: '174920512610-2pbh1jrusvbg79p86fndi1nkuf104i8q.apps.googleusercontent.com',
     clientSecret: '5rpSupc69NVmSdKyf7ALetV5',
     callbackURL: "/auth/google/callback",
-    scope: ['email'],
+    scope: ['email', 'profile'],
   },
   // This is a "verify" function required by all Passport strategies
   (accessToken, refreshToken, profile, cb) => {
