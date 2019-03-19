@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
 var itemData = require('../models/sellerModel');
+var profileData = require('../models/profileModel');
 var authenticate = require('./authenticating');
 
 
@@ -47,6 +48,48 @@ function checkAuthentication(req,res,next){
     }
 }
 // post request to edit listings
+
+router.get('/validateUser', function(req, res, next){
+  var fields = req.session.passport.user._json
+  var username = /[^@]+/.exec(fields.email);
+  profileData.findOneAndUpdate(
+    {username: username}, // query
+    {username: username, // update
+      firstName: fields.given_name, 
+      lastName: fields.family_name, 
+      img: fields.picture
+    },
+    {upsert: true},
+    (err, doc) => {
+      if (err) {
+        console.log(`User Validation: Error ${err}`)
+      } else {
+        console.log(`User Validation: Complete.\nRedirecting back to ${req.session.authorigin}`)
+        if (typeof req.session.authorigin !== 'undefined') {
+          res.redirect(`/${req.session.authorigin}`);
+        } else {
+          res.redirect('/');
+        }
+      }
+    }
+  )
+  // profileData.countDocuments({ email: req.session.passport.user._json.email })
+  //   .then((count) => {
+  //     if (count > 0) {
+  //       console.log('User Validation: User has logged in before.');
+  //     } else {
+  //       console.log('User Validation: First time login, adding user to DB.');
+  //       // TODO: Add user to DB.
+  //       // profileData
+  //     }
+  //     console.log(`User Validation: Complete.\nRedirecting back to ${req.session.authorigin}`)
+  //     if (typeof req.session.authorigin !== 'undefined') {
+  //       res.redirect(`/${req.session.authorigin}`);
+  //     } else {
+  //       res.redirect('/');
+  //     }
+  //   });
+});
 
 
 

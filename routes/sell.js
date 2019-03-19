@@ -71,10 +71,10 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
   var data = new itemData(item);
   data.save();
 
-  require('../models/sellerModel').find().then(doc => {
-    console.log('ddd');
-    console.log(doc);
-  })
+  // require('../models/sellerModel').find().then(doc => {
+  //   console.log('ddd');
+  //   console.log(doc);
+  // })
 
   res.redirect('/');
 });

@@ -2,7 +2,6 @@ var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
 const passport = require('passport');
-var profileData = require('../models/profileModel');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 
@@ -38,28 +37,9 @@ router.get('/',
     // console.log('wooo we authenticated, here is our user object:');
     // let user = profileData.findOne({"email": req.session.passport.user._json.email});
 
-  res.redirect("/auth/google/callback/validateUser");
+  res.redirect("/profile/validateUser");
 }
 );
-
-router.get('/validateUser', function(req,res,next){
-  console.log(req.session.passport.user._json.email);
-  profileData.countDocuments({ email: req.session.passport.user._json.email })
-    .then((count) => {
-      if (count > 0) {
-        console.log('Authentication: User has logged in before.');
-      } else {
-        console.log('Authentication: First time login, adding user to DB.');
-        // TODO: Add user to DB.
-      }
-      console.log(`Authentication: User validation complete.\nRedirecting back to ${req.session.authorigin}`)
-      if (typeof req.session.authorigin !== 'undefined') {
-        res.redirect(`/${req.session.authorigin}`);
-      } else {
-        res.redirect('/');
-      }
-    });
-});
 
 
 module.exports = router;
