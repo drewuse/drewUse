@@ -10,7 +10,10 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr" crossorigin="anonymous">
   </head>
   <nav class="navbar navbar-dark bg-dark">
-    <a class="navbar-brand text-white" href="/">{{ title }}</a>
+    <a class="navbar-brand text-white" href="/">
+      <img src="/images/shopNavInverted.png" width="30" height="30" class="d-inline-block align-top" alt="">
+      <b>{{ title }}</b>
+    </a>
     <!-- <button class="btn btn-success my-2 my-sm-0 float-right" id="loginButton"><a href="/auth/google/callback">Login</a></button> -->
     <form class="form-inline">
       <a class="btn btn-success my-2 my-sm-0" style="margin-right:10px" id="loginButton" href="/auth/google/callback" role="button">Login</a>
