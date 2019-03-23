@@ -25,7 +25,10 @@
           <a class="btn btn-danger my-2 my-sm-0" id="sellButton" href="/sell" role="button">Sell</a>
         </li>
         <li class="nav-item dropdown">
-          <img src="{{currentSession.passport.user._json.picture}}" class="rounded-circle z-depth-0" height="40" alt="avatar image" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <!-- <img src="{{currentSession.passport.user._json.picture}}" class="rounded-circle z-depth-0" height="40" alt="avatar image" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> -->
+          <button class="btn btn-default dropdown-toggle text-white" type="button" data-toggle="dropdown">
+            <img src="{{currentSession.passport.user._json.picture}}" class="rounded-circle z-depth-0" height="25" alt="avatar image" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+            <span class="caret"></span>{{currentSession.passport.user._json.name}}</button>
           <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
             <a class="dropdown-item" href="/profile">Profile</a>
             <div class="dropdown-divider"></div>
@@ -53,7 +56,6 @@
       </ul>
     </div>
   </nav>
-
   {{/if}}
   <body>
     <div class="container">
