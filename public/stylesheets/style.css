@@ -2,6 +2,9 @@ a {
   font: 25px "Lucida Grande";
   color: white;
 }
+a.dropdown-item{
+  font: 18px "Lucida Grande";
+}
 
 #icon{
   color: white;
@@ -9,5 +12,5 @@ a {
   margin-right:10px
 }
 #sellButton{
-  margin-right:20px;
+  margin-right:15px;
 }
