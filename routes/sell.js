@@ -38,7 +38,7 @@ const imageParser = multer({ storage: storage });
 
 /* get sellers page. */
 router.get('/', checkAuthentication, function(req, res, next) {
-  res.render('sell', {title: 'DrewUse'});
+  res.render('sell', {title: 'DrewUse', currentSession: req.session});
 });
 
 // post request to create listings
@@ -54,7 +54,7 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
     datePosted: current_timestamp,
     datePostedComputed: dateReadable,
     // TODO: Add support for multiple images
-    image_url: req.file.url, 
+    image_url: req.file.url,
     image_public_id: req.file.public_id,
     // imgs:[{
     //   url: req.file.url,
