@@ -17,7 +17,7 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
 
 /* GET home page. */
 router.get('/' ,function(req, res, next) {
-  itemData.find().sort( { datePosted: -1 } )
+  itemData.find({sold:false}).sort( { datePosted: -1 } )
     .then(function(doc) {
       res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session});
     });
