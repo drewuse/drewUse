@@ -12,11 +12,27 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
   // extends to get request and post request to listings
 /* gets profile page.(render posting owned by user and user profile)*/
 router.get('/',checkAuthentication, function(req, res, next) {
-  itemData.find({postedBy:req.session.passport.user._json.email}).sort( { datePosted: -1 } )
+  itemData.find({postedBy:req.session.passport.user._json.email, sold:false}).sort( { datePosted: -1 } )
     .then(function(doc) {
       res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
     });
-    console.log("You have accessed the protected endpoint!");
+    console.log("You have accessed the selling link!");
+});
+
+router.get('/sold', function(req,res,next){
+  itemData.find({postedBy:req.session.passport.user._json.email, sold:true}).sort( { datePosted: -1 } )
+    .then(function(doc) {
+      res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
+    });
+    console.log("You have accessed the sold link!");
+});
+
+router.get('/bought', function(req,res,next){
+  itemData.find({boughtBy:req.session.passport.user._json.email}).sort( { datePosted: -1 } )
+    .then(function(doc) {
+      res.render('profile', { title: 'DrewUse', items:doc, currentSession: req.session});
+    });
+    console.log("You have accessed the bought link!");
 });
 
 // post request to delete listings
@@ -55,8 +71,8 @@ router.get('/validateUser', function(req, res, next) {
   profileData.findOneAndUpdate(
     {username: username}, // query
     { username: username, // update fields
-      firstName: fields.given_name, 
-      lastName: fields.family_name, 
+      firstName: fields.given_name,
+      lastName: fields.family_name,
       img: fields.picture,
       email: fields.email
     },

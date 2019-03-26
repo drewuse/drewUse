@@ -2,18 +2,19 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-sm-4">
-        <div class="card mb-3" style="height:25vw;">
-        <img src="{{currentSession.passport.user._json.picture}}" class="card-img-top" alt="...">
-        <div class="card-body">
-          <h5 class="card-title">  {{currentSession.passport.user._json.name}}</h5>
-          <p class="card-text">{{currentSession.passport.user._json.email}}</p>
+      <!-- style="height:25vw;" -->
+        <div class="card mb-4" style="width: 18rem;">
+          <img class="card-img-top" src="{{currentSession.passport.user._json.picture}}" alt="Card image cap">
+          <div class="card-body">
+            <h5 class="card-title">{{currentSession.passport.user._json.name}}</h5>
+
+            <div class="list-group">
+              <a href="/profile" class="list-group-item list-group-item-action">Selling</a>
+              <a href="/profile/sold" class="list-group-item list-group-item-action">Sold</a>
+              <a href="/profile/bought" class="list-group-item list-group-item-action">Bought</a>
+            </div>
+          </div>
         </div>
-        <ul class="list-group list-group-flush">
-          <li class="list-group-item">Items Selling</li>
-          <li class="list-group-item">Items Sold</li>
-          <li class="list-group-item">Items Bought</li>
-        </ul>
-      </div>
     </div>
     <div class="col-sm-8">
     {{# each items }}
@@ -23,18 +24,19 @@
         <img src="{{this.image_url}}" class="card-img" alt="...">
       </div>
       <div class="col-md-8">
-        <!-- <form action="/profile/deleteItem" method="post"> -->
         <div class="card-body">
             <h5 class="card-title" name="title">{{ this.title }}</h5>
             <p class="card-text" name="description">{{ this.description }}</p>
             <a name="price">Price: ${{ this.price }}</a>
             <p class="card-text" name="datePostedComputed">Date Posted: {{ this.datePostedComputed }}</p>
             <a class="btn btn-warning">Sold: {{ this.sold }}</a>
-            <!-- <a class="btn btn-danger" data-toggle="modal" data-target="#myModal">Delete</a> -->
-            <a href="/profile/modifyItem/{{ this._id }}" onclick="return confirm('Are you sure you sold this item?');"><button class="btn btn-primary">Sold</button></a>
+            {{#if this.sold}}
+
+            {{else}}
+              <a href="/profile/modifyItem/{{ this._id }}" onclick="return confirm('Are you sure you sold this item?');"><button class="btn btn-primary">Sold</button></a>
+            {{/if}}
             <a href="/profile/deleteItem/{{ this._id }}" onclick="return confirm('Are you sure you want to delete this item?');"><button class="btn btn-danger">Delete</button></a>
         </div>
-          <!-- </form> -->
       </div>
     </div>
   </div>
