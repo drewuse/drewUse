@@ -3,16 +3,17 @@
     <div class="row">
         {{# each items }}
         <div class="col-sm-3" style="margin-top:20px">
-          <img src="{{ this.image_url }}" class="card-img-top" alt="..." style="height:10vw;">
           <div class="card" >
+            <img class="card-img-top" src="{{ this.image_url }}" alt="..." style="height:10vw;">
             <div class="card-body">
               <h5 class="card-title" name="title">{{ this.title }}</h5>
+              <p name="price">Price: ${{ this.price }}</p>
               <p class="card-text" name="description">{{ this.description }}</p>
-              <a name="price">Price: ${{ this.price }}</a>
-              <p class="card-text" name="datePostedComputed">Date Posted: {{ this.datePostedComputed }}</p>
-              <!-- <a class="btn btn-primary">Sold: {{ this.sold }}</a> -->
               <center><a class="btn btn-success" href="mailto:{{this.postedBy}}">I'm Interested</a></center>
             </div>
+            <div class="card-footer">
+             <small class="text-muted">{{ this.datePostedComputed }}</small>
+           </div>
           </div>
         </div>
         {{/each}}
