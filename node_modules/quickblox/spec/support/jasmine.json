@@ -1,0 +1,11 @@
+{
+  "spec_dir": "spec",
+  "spec_files": [
+    "QB-HelpersSpec.js",
+    "QB-CoreSpec.js",
+    "QB-DataSpec.js",
+    "QB-WebRTCSpec.js"
+  ],
+  "stopSpecOnExpectationFailure": true,
+  "random": false
+}

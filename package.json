@@ -23,8 +23,10 @@
     "nodemon": "^1.18.10",
     "passport": "^0.4.0",
     "passport-google-oauth20": "^2.0.0",
+    "quickblox": "^2.12.2",
     "react": "^16.8.3",
     "react-dom": "^16.8.3",
+    "react-router-dom": "^5.0.0",
     "reactstrap": "^7.1.0"
   }
 }

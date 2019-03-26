@@ -6,8 +6,9 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var sellRouter = require('./routes/sell');
-var profileRouter = require('./routes/profile')
-var googleAuthRouter = require('./routes/authenticating')
+var profileRouter = require('./routes/profile');
+var googleAuthRouter = require('./routes/authenticating');
+var chatRouter = require('./routes/chat');
 
 var hbs = require('express-handlebars');
 var expressValidator = require('express-validator');
@@ -42,6 +43,7 @@ app.use('/', indexRouter);
 app.use('/sell', sellRouter);
 app.use('/profile', profileRouter);
 app.use('/auth/google/callback', googleAuthRouter)
+app.use('/chat', chatRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
