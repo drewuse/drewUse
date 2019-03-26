@@ -6,8 +6,7 @@
         <div class="card mb-4" style="width: 18rem;">
           <img class="card-img-top" src="{{currentSession.passport.user._json.picture}}" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">{{currentSession.passport.user._json.name}}</h5>
-
+            <center><h4 class="card-title">{{currentSession.passport.user._json.name}}</h4></center>
             <div class="list-group">
               <a href="/profile" class="list-group-item list-group-item-action">Selling</a>
               <a href="/profile/sold" class="list-group-item list-group-item-action">Sold</a>
@@ -26,12 +25,10 @@
       <div class="col-md-8">
         <div class="card-body">
             <h5 class="card-title" name="title">{{ this.title }}</h5>
+            <p name="price">Price: ${{ this.price }}</p>
             <p class="card-text" name="description">{{ this.description }}</p>
-            <a name="price">Price: ${{ this.price }}</a>
-            <p class="card-text" name="datePostedComputed">Date Posted: {{ this.datePostedComputed }}</p>
             <a class="btn btn-warning">Sold: {{ this.sold }}</a>
             {{#if this.sold}}
-
             {{else}}
               <a href="/profile/modifyItem/{{ this._id }}" onclick="return confirm('Are you sure you sold this item?');"><button class="btn btn-primary">Sold</button></a>
             {{/if}}
@@ -39,6 +36,9 @@
         </div>
       </div>
     </div>
+    <div class="card-footer">
+     <small class="text-muted">{{ this.datePostedComputed }}</small>
+   </div>
   </div>
   {{/each}}
 </div>
