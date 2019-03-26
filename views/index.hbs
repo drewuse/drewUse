@@ -10,7 +10,7 @@
               <p name="price">Price: ${{ this.price }}</p>
               <p class="card-text" name="description">{{ this.description }}</p>
               <hr/>
-              <center><a class="btn btn-success" href="mailto:{{this.postedBy}}">I'm Interested</a></center>
+              <center><a class="btn btn-success" href="mailto:{{this.postedBy}}?subject={{this.title}}on DrewUse">I'm Interested</a></center>
             </div>
             <div class="card-footer">
              <small class="text-muted">{{ this.datePostedComputed }}</small>
