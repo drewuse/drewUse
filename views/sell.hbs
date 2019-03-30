@@ -1,39 +1,21 @@
 <br>
 <h3>Start Selling</h3>
     <form action="/sell/insert" method="post" enctype="multipart/form-data">
-      <table>
-        <tr class="input">
-          <td align="right">
+        <div class="input">
             <label for="title">Title</label>
-          </td>
-          <td align="left">
-            <input type="text" name="first" />
-          </td>
-        </tr>
-        <tr class="input">
-          <td align="right">
+            <input type="text" id="title" name="title">
+        </div>
+        <div class="input">
             <label for="content">Price</label>
-          </td>
-          <td align="left">
             <input type="number" id="price" name="price">
-          </td>
-        </tr>
-        <tr class="input">
-          <td align="right">
+        </div>
+        <div class="input">
             <label for="author">Description</label>
-          </td>
-          <td align="left">
             <input type="text" id="description" name="description">
-          </td>
-        </tr>
-        <tr class="input">
-          <td align="right">
+        </div>
+        <div class="input">
             <label for="image">Image</label>
-          </td>
-          <td align="left">
             <input type="file" id="image" name="image">
-          </td>
-        </tr>
-      </table>
+        </div>
         <button class="btn btn-primary" type="submit">Start Selling</button>
     </form>
