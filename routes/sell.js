@@ -60,6 +60,8 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
     //   url: req.file.url,
     //   public_id: req.file.public_id,
     // }],
+    condition: req.body.condition,
+    book_type: req.body.booktype,
     dateSold: null,
     postedBy: req.session.passport.user._json.email,
     boughtBy: null,
