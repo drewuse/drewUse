@@ -18,7 +18,7 @@ var itemDataSchema= new Schema({
   postedBy: String,
   // Book details (possible TODO: change some to ENUMs?)
   condition: String,  // non-optional
-  book_type: String,  // non-optional
+  booktype: String,  // non-optional
   course_num: String, // not Number because may be alphanumeric
   course_name: String,
   course_subject: String,

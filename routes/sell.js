@@ -46,6 +46,21 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
   var current_timestamp = Long.fromNumber(current_millies);
   var date = new Date(current_millies);
   var dateReadable = date.toString();
+  // Parse form values
+  var condition;
+  switch (req.body.condition) {
+    case 'new': 'New'
+    case 'used-vg': condition = 'Used (Very Good)'
+    case 'used-gd': condition = 'Used (Good)'
+    case 'used-ac': condition = 'Used (Acceptable)'
+  }
+  var booktype;
+  switch (req.body.booktype) {
+    case 'textbook': booktype = 'Textbook'
+    case 'course-rr': booktype = 'Course Required Reading'
+    case 'other': booktype = 'non-textbook'
+  }
+  // Populate DB schema
   var item = {
     title: req.body.title,
     description: req.body.description,
@@ -60,8 +75,8 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
     //   url: req.file.url,
     //   public_id: req.file.public_id,
     // }],
-    condition: req.body.condition,
-    book_type: req.body.booktype,
+    condition: condition,
+    booktype: booktype,
     dateSold: null,
     postedBy: req.session.passport.user._json.email,
     boughtBy: null,
