@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
-var itemData = require('../models/sellerModel');
+var itemData = require('../models/item_model');
 var Long = require('mongodb').Long;
 var current_millies = new Date().getTime();
 // For photo upload and storage
@@ -84,7 +84,6 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
     priceSoldAt: null,
     sold: false
   };
-  console.log(item);
   var data = new itemData(item);
   data.save();
 

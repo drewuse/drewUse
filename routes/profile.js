@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var mongoose= require('mongoose');
-var itemData = require('../models/sellerModel');
+var itemData = require('../models/item_model');
 var profileData = require('../models/profileModel');
-var authenticate = require('./authenticating');
 
 
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');

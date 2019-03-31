@@ -5,9 +5,9 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var sellRouter = require('./routes/sell');
+var sellRouter = require('./routes/sellForm');
 var profileRouter = require('./routes/profile')
-var googleAuthRouter = require('./routes/authenticating')
+var googleAuthRouter = require('./routes/authentication')
 var logoutRouter = require('./routes/logout')
 
 var hbs = require('express-handlebars');
