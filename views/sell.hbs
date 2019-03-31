@@ -1,21 +1,44 @@
 <br>
 <h3>Start Selling</h3>
     <form action="/sell/insert" method="post" enctype="multipart/form-data">
+        <!-- Title Input -->
         <div class="input">
-            <label for="title">Title</label>
-            <input type="text" id="title" name="title">
+          <label for="title">Title</label>
+          <input type="text" id="title" name="title">
         </div>
+        <!-- Price Input -->
         <div class="input">
-            <label for="content">Price</label>
-            <input type="number" id="price" name="price">
+          <label for="content">Price</label>
+          <input type="number" id="price" name="price">
         </div>
+        <!-- Item Description Input -->
         <div class="input">
-            <label for="author">Description</label>
-            <input type="text" id="description" name="description">
+          <label for="author">Description</label>
+          <input type="text" id="description" name="description">
         </div>
+        <!-- Image Input -->
         <div class="input">
-            <label for="image">Image</label>
-            <input type="file" id="image" name="image">
+          <label for="image">Image</label>
+          <input type="file" id="image" name="image">
+        </div>
+        <!-- Condition Dropdown -->
+        <div class="input">
+          <label for="dd-condition"><strong>Book Condition</strong></label>
+          <select class="form-control" id="dd-condition" name="dd-condition">
+            <option value="new">New</option>
+            <option value="used-vg">Used - Very Good</option>
+            <option value="used-gd">Used - Good</option>
+            <option value="used-ac">Used - Acceptable</option>
+          </select>
+        </div>
+        <!-- Book Type Dropdown -->
+        <div class="input">
+          <label for="dd-booktype"><strong>Book Type</strong></label>
+          <select class="form-control" id="dd-booktype" name="dd-booktype">
+            <option value="textbook">Textbook</option>
+            <option value="course-rr">Required Course Reading (non-textbook)</option>
+            <option value="other">Other (non-textbook)</option>
+          </select>
         </div>
         <button class="btn btn-primary" type="submit">Start Selling</button>
     </form>
