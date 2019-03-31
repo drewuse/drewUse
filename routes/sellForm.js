@@ -49,16 +49,30 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
   // Parse form values
   var condition;
   switch (req.body.condition) {
-    case 'new': 'New'
-    case 'used-vg': condition = 'Used (Very Good)'
-    case 'used-gd': condition = 'Used (Good)'
-    case 'used-ac': condition = 'Used (Acceptable)'
+    case 'new': 
+      condition = 'New';
+      break;
+    case 'used-vg': 
+      condition = 'Used (Very Good)';
+      break;
+    case 'used-gd':
+      condition = 'Used (Good)'
+      break;
+    case 'used-ac': 
+      condition = 'Used (Acceptable)';
+      break;
   }
   var booktype;
   switch (req.body.booktype) {
-    case 'textbook': booktype = 'Textbook'
-    case 'course-rr': booktype = 'Course Required Reading'
-    case 'other': booktype = 'non-textbook'
+    case 'textbook':
+      booktype = 'Textbook';
+      break;
+    case 'course-rr':
+      booktype = 'Course Required Reading';
+      break;
+    case 'other':
+      booktype = 'non-textbook';
+      break;
   }
   // Populate DB schema
   var item = {
