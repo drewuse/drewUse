@@ -38,7 +38,7 @@ const imageParser = multer({ storage: storage });
 
 /* get sellers page. */
 router.get('/', checkAuthentication, function(req, res, next) {
-  res.render('sell', {title: 'DrewUse', currentSession: req.session});
+  res.render('sellForm', {title: 'DrewUse', currentSession: req.session});
 });
 
 // post request to create listings
