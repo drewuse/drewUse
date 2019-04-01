@@ -17,13 +17,15 @@ mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.
 /* GET home page. */
 router.get('/' ,function(req, res, next) {
   // Filter based on requests code
-  results = itemData;
+  var filters = {};
+  var results = itemData;
   if (req.query.condition) {
   	results = results.find({condition:req.query.condition});
+  	filters.condition = req.query.condition;
   }
   results.find({sold:false}).sort( { datePosted: -1 } )
   	.then(function(doc) {
-      res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session});
+      res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session, filters:filters});
     });
 });
 

@@ -19,7 +19,17 @@ const GoogleStrategy = require('passport-google-oauth20').Strategy;
 var app = express();
 
 // view engine setup
-app.engine('hbs', hbs({extname: 'hbs', defaultLayout:'layout.hbs', layoutsDir:__dirname+'/views/layouts/'}));
+var handlebars = hbs.create({
+  helpers: {
+    ifEquals: function(arg1, arg2, options) {
+      return (arg1 == arg2) ? options.fn(this) : options.inverse(this);
+    },
+  },
+  extname: 'hbs',
+  defaultLayout:'layout.hbs',
+  layoutsDir:__dirname+'/views/layouts/'
+});
+app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 
