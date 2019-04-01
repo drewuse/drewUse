@@ -8,8 +8,8 @@
     <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
       <li>
         <a href="javascript:
-        var thisURL = document.URL;
-        var filterArg =  encodeURI('condition=New');
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        var filterArg = encodeURI('condition=New');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
         } else {
@@ -19,7 +19,7 @@
       </li>
       <li>
         <a href="javascript:
-        var thisURL = document.URL;
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
         var filterArg = encodeURI('condition=Used (Very Good)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
@@ -30,7 +30,7 @@
       </li>
       <li>
         <a href="javascript:
-        var thisURL = document.URL;
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
         var filterArg = encodeURI('condition=Used (Good)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
@@ -41,7 +41,7 @@
       </li>
       <li>
         <a href="javascript:
-        var thisURL = document.URL;
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
         var filterArg = encodeURI('condition=Used (Acceptable)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
