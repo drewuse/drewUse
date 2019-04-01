@@ -9,7 +9,7 @@
       <li>
         <a href="javascript:
         var thisURL = document.URL;
-        var filterArg = 'condition=new';
+        var filterArg =  encodeURI('condition=New');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
         } else {
@@ -20,7 +20,7 @@
       <li>
         <a href="javascript:
         var thisURL = document.URL;
-        var filterArg = 'condition=used-vg';
+        var filterArg = encodeURI('condition=Used (Very Good)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
         } else {
@@ -31,7 +31,7 @@
       <li>
         <a href="javascript:
         var thisURL = document.URL;
-        var filterArg = 'condition=used-gd';
+        var filterArg = encodeURI('condition=Used (Good)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
         } else {
@@ -42,7 +42,7 @@
       <li>
         <a href="javascript:
         var thisURL = document.URL;
-        var filterArg = 'condition=used-ac';
+        var filterArg = encodeURI('condition=Used (Acceptable)');
         if (thisURL.includes('?')) {
           window.location.href = `${thisURL}&${filterArg}`;
         } else {
