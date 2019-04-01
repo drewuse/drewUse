@@ -1,5 +1,63 @@
 <br>
 <h2>Listings</h2>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dd-filtercondition" data-toggle="dropdown">
+      Filter Book Condition
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
+      <li>
+        <a class="dropdown-item" href="javascript:
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        var filterArg = encodeURI('condition=New');
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">New</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="javascript:
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        var filterArg = encodeURI('condition=Used (Very Good)');
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Very Good</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="javascript:
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        var filterArg = encodeURI('condition=Used (Good)');
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Good</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="javascript:
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        var filterArg = encodeURI('condition=Used (Acceptable)');
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Acceptable</a>
+      </li>
+      <li>
+        <a class="dropdown-item" href="javascript:
+        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
+        window.location.href = thisURL;
+        "><i class="fas fa-times"></i> Reset Filter</a>
+      </li>
+    </ul>
+  </div>
   {{#if currentSession.passport}}
     <div class="row">
         {{# each items }}
