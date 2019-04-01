@@ -1,5 +1,57 @@
 <br>
 <h2>Listings</h2>
+  <div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dd-filtercondition" data-toggle="dropdown">
+      Filter Book Condition
+      <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
+      <li>
+        <a href="javascript:
+        var thisURL = document.URL;
+        var filterArg = 'condition=new';
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">New</a>
+      </li>
+      <li>
+        <a href="javascript:
+        var thisURL = document.URL;
+        var filterArg = 'condition=used-vg';
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Very Good</a>
+      </li>
+      <li>
+        <a href="javascript:
+        var thisURL = document.URL;
+        var filterArg = 'condition=used-gd';
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Good</a>
+      </li>
+      <li>
+        <a href="javascript:
+        var thisURL = document.URL;
+        var filterArg = 'condition=used-ac';
+        if (thisURL.includes('?')) {
+          window.location.href = `${thisURL}&${filterArg}`;
+        } else {
+          window.location.href = `${thisURL}?${filterArg}`;
+        }
+        ">Used - Acceptable</a>
+      </li>
+    </ul>
+  </div>
   {{#if currentSession.passport}}
     <div class="row">
         {{# each items }}
