@@ -1,103 +1,153 @@
 <br>
 <h2>Listings</h2>
-  <div class="dropdown">
-    <button class="btn btn-default dropdown-toggle" type="button" id="dd-filtercondition" data-toggle="dropdown">
+<!-- FILTER BY CONDITION Dropdown -->
+<div class="dropdown">
+  <button class="btn dropdown-toggle
+  {{#if filters.condition}}
+    btn-success
+  {{else}}
+    btn-secondary
+  {{/if}}" type="button" id="dd-filtercondition" data-toggle="dropdown">
+    {{#ifEquals filters.condition "New"}}
+      Filtering by Condition: New
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Very Good)"}}
+      Filtering by Condition: Used (Very Good)
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Good)"}}
+      Filtering by Condition: Used (Good)
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Acceptable)"}}
+      Filtering by Condition: Used (Acceptable)
+    {{/ifEquals}}
+    {{#unless filters.condition}}
       Filter Book Condition
-      <span class="caret"></span>
-    </button>
-    <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
-      <li>
-        <a class="dropdown-item" href="javascript:
-        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-        var filterArg = encodeURI('condition=New');
-        if (thisURL.includes('?')) {
-          window.location.href = `${thisURL}&${filterArg}`;
-        } else {
-          window.location.href = `${thisURL}?${filterArg}`;
-        }
-        ">New</a>
-      </li>
-      <li>
-        <a class="dropdown-item" href="javascript:
-        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-        var filterArg = encodeURI('condition=Used (Very Good)');
-        if (thisURL.includes('?')) {
-          window.location.href = `${thisURL}&${filterArg}`;
-        } else {
-          window.location.href = `${thisURL}?${filterArg}`;
-        }
-        ">Used - Very Good</a>
-      </li>
-      <li>
-        <a class="dropdown-item" href="javascript:
-        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-        var filterArg = encodeURI('condition=Used (Good)');
-        if (thisURL.includes('?')) {
-          window.location.href = `${thisURL}&${filterArg}`;
-        } else {
-          window.location.href = `${thisURL}?${filterArg}`;
-        }
-        ">Used - Good</a>
-      </li>
-      <li>
-        <a class="dropdown-item" href="javascript:
-        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-        var filterArg = encodeURI('condition=Used (Acceptable)');
-        if (thisURL.includes('?')) {
-          window.location.href = `${thisURL}&${filterArg}`;
-        } else {
-          window.location.href = `${thisURL}?${filterArg}`;
-        }
-        ">Used - Acceptable</a>
-      </li>
-      <li>
-        <a class="dropdown-item" href="javascript:
-        var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-        window.location.href = thisURL;
-        "><i class="fas fa-times"></i> Reset Filter</a>
-      </li>
-    </ul>
+    {{/unless}}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('New');
+        addFilter('condition', filterVal);
+      ">{{#ifEquals filters.condition "New"}}<i class="fas fa-check"></i>{{/ifEquals}} New</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Used (Very Good)');
+        addFilter('condition', filterVal);
+      ">{{#ifEquals filters.condition "Used (Very Good)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Very Good</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Used (Good)');
+        addFilter('condition', filterVal);
+      ">{{#ifEquals filters.condition "Used (Good)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Good</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Used (Acceptable)');
+        addFilter('condition', filterVal);
+      ">{{#ifEquals filters.condition "Used (Acceptable)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Acceptable</a>
+    </li>
+    <div class="dropdown-divider"></div>
+    <li>
+      <a class="dropdown-item btn-danger" href="javascript:
+      addFilter('condition', '');
+      "><i class="fas fa-times"></i> Reset Filter</a>
+    </li>
+  </ul>
+</div>
+<!-- FILTER BY BOOKTYPE Dropdown -->
+<div class="dropdown">
+  <button class="btn dropdown-toggle
+  {{#if filters.booktype}}
+    btn-success
+  {{else}}
+    btn-secondary
+  {{/if}}" type="button" id="dd-filterbooktype" data-toggle="dropdown">
+    {{#ifEquals filters.booktype "Textbook"}}
+      Filtering by Type: Textbook
+    {{/ifEquals}}
+    {{#ifEquals filters.booktype "Course Required Reading"}}
+      Filtering by Type: Course Required Reading
+    {{/ifEquals}}
+    {{#ifEquals filters.booktype "Non-Textbook"}}
+      Filtering by Type: Non-Textbook
+    {{/ifEquals}}
+    {{#unless filters.booktype}}
+      Filter Book Type
+    {{/unless}}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelled-by="dd-filterbooktype">
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Textbook');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Textbook"}}<i class="fas fa-check"></i>{{/ifEquals}} Textbook</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Course Required Reading');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Course Required Reading"}}<i class="fas fa-check"></i>{{/ifEquals}} Course Required Reading</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Non-Textbook');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Non-Textbook"}}<i class="fas fa-check"></i>{{/ifEquals}} Non-Textbook</a>
+    </li>
+    <div class="dropdown-divider"></div>
+    <li>
+      <a class="dropdown-item btn-danger" href="javascript:
+      addFilter('booktype', '');
+      "><i class="fas fa-times"></i> Reset Filter</a>
+    </li>
+  </ul>
+</div>
+<!-- LISTING CARDS -->
+{{#if currentSession.passport}}
+  <div class="row">
+      {{# each items }}
+      <div class="col-sm-3" style="margin-top:20px">
+        <div class="card" >
+          <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
+          <div class="card-body">
+            <h5 class="card-title" name="title">{{ this.title }}</h5>
+            <p name="price">Price: ${{ this.price }}</p>
+            <p class="card-text" name="description">{{ this.description }}</p>
+            <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
+            <hr/>
+            <center><a class="btn btn-success" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
+          </div>
+          <div class="card-footer">
+           <small class="text-muted">{{ this.datePostedComputed }}</small>
+         </div>
+        </div>
+      </div>
+      {{/each}}
   </div>
-  {{#if currentSession.passport}}
-    <div class="row">
-        {{# each items }}
-        <div class="col-sm-3" style="margin-top:20px">
-          <div class="card" >
-            <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
-            <div class="card-body">
-              <h5 class="card-title" name="title">{{ this.title }}</h5>
-              <p name="price">Price: ${{ this.price }}</p>
-              <p class="card-text" name="description">{{ this.description }}</p>
-              <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
-              <hr/>
-              <center><a class="btn btn-success" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
-            </div>
-            <div class="card-footer">
-             <small class="text-muted">{{ this.datePostedComputed }}</small>
-           </div>
+{{else}}
+  <div class="row">
+      {{# each items }}
+      <div class="col-sm-3" style="margin-top:20px">
+        <div class="card" >
+          <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
+          <div class="card-body">
+            <h5 class="card-title" name="title">{{ this.title }}</h5>
+            <p name="price">Price: ${{ this.price }}</p>
+            <p class="card-text" name="description">{{ this.description }}</p>
+            <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
+            <hr/>
+            <center><a class="btn btn-success disabled" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
           </div>
+          <div class="card-footer">
+           <small class="text-muted">{{ this.datePostedComputed }}</small>
+         </div>
         </div>
-        {{/each}}
-    </div>
-    {{else}}
-    <div class="row">
-        {{# each items }}
-        <div class="col-sm-3" style="margin-top:20px">
-          <div class="card" >
-            <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
-            <div class="card-body">
-              <h5 class="card-title" name="title">{{ this.title }}</h5>
-              <p name="price">Price: ${{ this.price }}</p>
-              <p class="card-text" name="description">{{ this.description }}</p>
-              <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
-              <hr/>
-              <center><a class="btn btn-success disabled" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
-            </div>
-            <div class="card-footer">
-             <small class="text-muted">{{ this.datePostedComputed }}</small>
-           </div>
-          </div>
-        </div>
-        {{/each}}
-    </div>
-    {{/if}}
+      </div>
+      {{/each}}
+  </div>
+{{/if}}
