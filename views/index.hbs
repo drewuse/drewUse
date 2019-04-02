@@ -1,5 +1,6 @@
 <br>
 <h2>Listings</h2>
+<!-- FILTER BY CONDITION Dropdown -->
 <div class="dropdown">
   <button class="btn dropdown-toggle
   {{#if filters.condition}}
@@ -27,37 +28,86 @@
   <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
     <li>
       <a class="dropdown-item" href="javascript:
-        var filterArg = encodeURI('condition=New');
-        addFilter(filterArg);
+        var filterVal = encodeURI('New');
+        addFilter('condition', filterVal);
       ">{{#ifEquals filters.condition "New"}}<i class="fas fa-check"></i>{{/ifEquals}} New</a>
     </li>
     <li>
       <a class="dropdown-item" href="javascript:
-        var filterArg = encodeURI('condition=Used (Very Good)');
-        addFilter(filterArg);
+        var filterVal = encodeURI('Used (Very Good)');
+        addFilter('condition', filterVal);
       ">{{#ifEquals filters.condition "Used (Very Good)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Very Good</a>
     </li>
     <li>
       <a class="dropdown-item" href="javascript:
-        var filterArg = encodeURI('condition=Used (Good)');
-        addFilter(filterArg);
+        var filterVal = encodeURI('Used (Good)');
+        addFilter('condition', filterVal);
       ">{{#ifEquals filters.condition "Used (Good)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Good</a>
     </li>
     <li>
       <a class="dropdown-item" href="javascript:
-        var filterArg = encodeURI('condition=Used (Acceptable)');
-        addFilter(filterArg);
+        var filterVal = encodeURI('Used (Acceptable)');
+        addFilter('condition', filterVal);
       ">{{#ifEquals filters.condition "Used (Acceptable)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Acceptable</a>
     </li>
     <div class="dropdown-divider"></div>
     <li>
       <a class="dropdown-item btn-danger" href="javascript:
-      var thisURL = document.URL.replace(/condition=[^&]+/g,'');
-      window.location.href = thisURL;
+      addFilter('condition', '');
       "><i class="fas fa-times"></i> Reset Filter</a>
     </li>
   </ul>
 </div>
+<!-- FILTER BY BOOKTYPE Dropdown -->
+<div class="dropdown">
+  <button class="btn dropdown-toggle
+  {{#if filters.booktype}}
+    btn-success
+  {{else}}
+    btn-secondary
+  {{/if}}" type="button" id="dd-filterbooktype" data-toggle="dropdown">
+    {{#ifEquals filters.booktype "Textbook"}}
+      Filtering by Type: Textbook
+    {{/ifEquals}}
+    {{#ifEquals filters.booktype "Course Required Reading"}}
+      Filtering by Type: Course Required Reading
+    {{/ifEquals}}
+    {{#ifEquals filters.booktype "Non-Textbook"}}
+      Filtering by Type: Non-Textbook
+    {{/ifEquals}}
+    {{#unless filters.booktype}}
+      Filter Book Type
+    {{/unless}}
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelled-by="dd-filterbooktype">
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Textbook');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Textbook"}}<i class="fas fa-check"></i>{{/ifEquals}} Textbook</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Course Required Reading');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Course Required Reading"}}<i class="fas fa-check"></i>{{/ifEquals}} Course Required Reading</a>
+    </li>
+    <li>
+      <a class="dropdown-item" href="javascript:
+        var filterVal = encodeURI('Non-Textbook');
+        addFilter('booktype', filterVal);
+      ">{{#ifEquals filters.booktype "Non-Textbook"}}<i class="fas fa-check"></i>{{/ifEquals}} Non-Textbook</a>
+    </li>
+    <div class="dropdown-divider"></div>
+    <li>
+      <a class="dropdown-item btn-danger" href="javascript:
+      addFilter('booktype', '');
+      "><i class="fas fa-times"></i> Reset Filter</a>
+    </li>
+  </ul>
+</div>
+<!-- LISTING CARDS -->
 {{#if currentSession.passport}}
   <div class="row">
       {{# each items }}

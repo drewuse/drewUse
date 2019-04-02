@@ -23,6 +23,10 @@ router.get('/' ,function(req, res, next) {
   	results = results.find({condition:req.query.condition});
   	filters.condition = req.query.condition;
   }
+  if (req.query.booktype) {
+  	results = results.find({booktype:req.query.booktype});
+  	filters.booktype = req.query.booktype;
+  }
   results.find({sold:false}).sort( { datePosted: -1 } )
   	.then(function(doc) {
       res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session, filters:filters});
