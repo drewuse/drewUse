@@ -1,8 +1,27 @@
 <br>
-<h2 id="hello">Listings</h2>
+<h2>Listings</h2>
 <div class="dropdown">
-  <button class="btn btn-default dropdown-toggle" type="button" id="dd-filtercondition" data-toggle="dropdown">
-    Filter Book Condition
+  <button class="btn dropdown-toggle
+  {{#if filters.condition}}
+    btn-success
+  {{else}}
+    btn-secondary
+  {{/if}}" type="button" id="dd-filtercondition" data-toggle="dropdown">
+    {{#ifEquals filters.condition "New"}}
+      Filtering by Condition: New
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Very Good)"}}
+      Filtering by Condition: Used (Very Good)
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Good)"}}
+      Filtering by Condition: Used (Good)
+    {{/ifEquals}}
+    {{#ifEquals filters.condition "Used (Acceptable)"}}
+      Filtering by Condition: Used (Acceptable)
+    {{/ifEquals}}
+    {{#unless filters.condition}}
+      Filter Book Condition
+    {{/unless}}
     <span class="caret"></span>
   </button>
   <ul class="dropdown-menu" aria-labelled-by="dd-filtercondition">
@@ -30,8 +49,9 @@
         addFilter(filterArg);
       ">{{#ifEquals filters.condition "Used (Acceptable)"}}<i class="fas fa-check"></i>{{/ifEquals}} Used - Acceptable</a>
     </li>
+    <div class="dropdown-divider"></div>
     <li>
-      <a class="dropdown-item" href="javascript:
+      <a class="dropdown-item btn-danger" href="javascript:
       var thisURL = document.URL.replace(/condition=[^&]+/g,'');
       window.location.href = thisURL;
       "><i class="fas fa-times"></i> Reset Filter</a>
