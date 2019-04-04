@@ -120,7 +120,7 @@
             <p class="card-text" name="description">{{ this.description }}</p>
             <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
             <hr/>
-            <center><a class="btn btn-success" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
+            <center><a class="btn btn-success" href="/chat/newMessage">I'm Interested</a></center>
           </div>
           <div class="card-footer">
            <small class="text-muted">{{ this.datePostedComputed }}</small>
@@ -141,7 +141,7 @@
             <p class="card-text" name="description">{{ this.description }}</p>
             <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
             <hr/>
-            <center><a class="btn btn-success disabled" href="mailto:{{this.postedBy}}?subject={{this.title}} on DrewUse&body= Hi {{this.postedBy}}, I am interested in the item you posted, {{this.title}}">I'm Interested</a></center>
+            <center><a class="btn btn-success disabled" href="/chat/newMessage">I'm Interested</a></center>
           </div>
           <div class="card-footer">
            <small class="text-muted">{{ this.datePostedComputed }}</small>

@@ -189,30 +189,44 @@ p.message {
 </style>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
 <br>
-  <header>
-      <h1>Chat</h1>
-    </header>
-
-    <section>
-      <div id="change_username">
-	<input id="username" type="text" />
-	<button id="send_username" type="button">Change username</button>
+  <div class="row">
+    <div class="col-sm-4">
+      <header>
+          <h1>Messages</h1>
+      </header>
+      <div class="card mb-3" style="max-height: 5rem;">
+        <div class="row no-gutters">
+          <div class="col-md-4" >
+            <img class="card-img-top" src="" alt="Card image cap" style="max-height: 5rem;">
+          </div>
+          <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+          </div>
+        </div>
       </div>
-    </section>
+      </div>
+    </div>
+    <div class="col-sm-8">
+        <!-- <section>
+          <div id="change_username">
+    	<input id="username" type="text" />
+    	<button id="send_username" type="button">Change username</button>
+          </div>
+        </section> -->
 
-    <section id="chatroom">
-      <section id="feedback"></section>
-    </section>
+        <section id="chatroom">
+          <section id="feedback"></section>
+        </section>
 
-
-
-    <section id="input_zone">
-      <input id="message" class="vertical-align" type="text" />
-      <button id="send_message" class="vertical-align" type="button">Send</button>
-    </section>
+        <section id="input_zone">
+          <input id="message" class="vertical-align" type="text" />
+          <button id="send_message" class="vertical-align" type="button">Send</button>
+        </section>
+  </div>
+</div>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
-    <!-- <script src="chat.js"></script> -->
     <script>
     $(function(){
        	//make connection
