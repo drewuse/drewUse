@@ -120,7 +120,16 @@
             <p class="card-text" name="description">{{ this.description }}</p>
             <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
             <hr/>
-            <center><a class="btn btn-success" href="/chat/newMessage">I'm Interested</a></center>
+            {{#if listingIsSameAsUser}}
+
+            {{else}}
+            <form action="/chat/newMessage" method="POST">
+              <input class="card-text" name="selectedImageUrl" value="{{this.image_url}}" style="display:none;"></input>
+              <input class="card-text" name="selectedPostTitle" value="{{this.title}}" style="display:none;"></input>
+              <input class="card-text" name="selectedPersonSelling" value="{{this.postedBy}}" style="display:none;"></input>
+              <center><button type="submit" class="btn btn-success">I'm Interested</button></center>
+            </form>
+            {{/if}}
           </div>
           <div class="card-footer">
            <small class="text-muted">{{ this.datePostedComputed }}</small>
@@ -141,7 +150,9 @@
             <p class="card-text" name="description">{{ this.description }}</p>
             <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
             <hr/>
-            <center><a class="btn btn-success disabled" href="/chat/newMessage">I'm Interested</a></center>
+            <form>
+            <center><button class="btn btn-success disabled">I'm Interested</button></center>
+          </form>
           </div>
           <div class="card-footer">
            <small class="text-muted">{{ this.datePostedComputed }}</small>
@@ -151,3 +162,4 @@
       {{/each}}
   </div>
 {{/if}}
+<br>

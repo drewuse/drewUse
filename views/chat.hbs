@@ -134,7 +134,7 @@ div#change_username {
 
 section#chatroom {
     border: 5px inset #8258FA;
-    height: 85%;
+    height: 75%;
     overflow: auto;
 }
 
@@ -194,26 +194,32 @@ p.message {
       <header>
           <h1>Messages</h1>
       </header>
-      <div class="card mb-3" style="max-height: 5rem;">
-        <div class="row no-gutters">
-          <div class="col-md-4" >
-            <img class="card-img-top" src="" alt="Card image cap" style="max-height: 5rem;">
-          </div>
-          <div class="col-md-8">
-          <div class="card-body">
-            <h5 class="card-title">Card title</h5>
+      {{# each chats }}
+      <!-- choose a thread -->
+      <!-- <form action="/chat/" method="POST"> -->
+        <button>
+        <div class="card mb-3" style="max-height: 5rem;">
+          <div class="row no-gutters">
+            <div class="col-md-4" >
+              <img class="card-img-top" src="{{this.selectedImageUrl}}" alt="Card image cap" style="max-height: 5rem;">
+            </div>
+            <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{this.selectedPostTitle}}</h5>
+              <p class="card-title">By: {{this.selectedPersonSelling}}</p>
+            </div>
           </div>
         </div>
-      </div>
-      </div>
+        </div>
+      </button>
+    <!-- </form> -->
+      {{/each}}
     </div>
     <div class="col-sm-8">
-        <!-- <section>
-          <div id="change_username">
-    	<input id="username" type="text" />
-    	<button id="send_username" type="button">Change username</button>
-          </div>
-        </section> -->
+      <div id="change_username">
+        <input id="username" value="{{currentSession.passport.user._json.email}}"></input>
+        <button id="send_username" type="button">Send</button>
+      </div>
 
         <section id="chatroom">
           <section id="feedback"></section>
@@ -223,7 +229,7 @@ p.message {
           <input id="message" class="vertical-align" type="text" />
           <button id="send_message" class="vertical-align" type="button">Send</button>
         </section>
-  </div>
+      </div>
 </div>
 
     <script src="http://code.jquery.com/jquery-latest.min.js"></script>
@@ -245,6 +251,11 @@ p.message {
     		socket.emit('new_message', {message : message.val()})
     	})
 
+      //Emit a username
+      send_username.click(function(){
+        socket.emit('change_username', {username : username.val()})
+      })
+
     	//Listen on new_message
     	socket.on("new_message", (data) => {
     		feedback.html('');
@@ -252,10 +263,7 @@ p.message {
     		chatroom.append("<p class='message'>" + data.username + ": " + data.message + "</p>")
     	})
 
-    	//Emit a username
-    	send_username.click(function(){
-    		socket.emit('change_username', {username : username.val()})
-    	})
+
 
     	//Emit typing
     	message.bind("keypress", () => {

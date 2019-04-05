@@ -3,10 +3,14 @@ var Schema = mongoose.Schema;
 
 var chatDataSchema= new Schema({
   // Initial info
-  users:[{name:String}],
+  users:[{email:String}],
   messages:[{message:String, byWho: String, timestamp:Date}],
-  dateChatCreated: Date,
-  dateChatStartedBy: String
+  dateChatCreated: Number,
+  dateChatCreatedComputed: String,
+  dateChatStartedBy: String,
+  selectedImageUrl: String,
+  selectedPostTitle: String,
+  selectedPersonSelling: String
 },{collection:'chats'});
 
 
