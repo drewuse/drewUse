@@ -77,7 +77,6 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
   // Populate DB schema
   var item = {
     title: req.body.title,
-    description: req.body.description,
     price: req.body.price,
     imgs: null,
     datePosted: current_timestamp,
@@ -91,6 +90,7 @@ router.post('/insert', imageParser.single('image'),  /* this middleware processe
     // }],
     condition: condition,
     booktype: booktype,
+    description: req.body.description ? req.body.description : '',
     dateSold: null,
     postedBy: req.session.passport.user._json.email,
     boughtBy: null,
