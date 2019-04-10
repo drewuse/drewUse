@@ -14,9 +14,10 @@ var current_millies = new Date().getTime();
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
 
 
-router.use(bodyParser.urlencoded({ extended: false }))
 
 router.use(bodyParser.json());
+router.use(bodyParser.urlencoded({ extended: false }))
+
 
 /* GET home page. */
 router.get('/' , function(req, res, next) {
@@ -50,9 +51,43 @@ router.post('/newMessage', function(req,res){
   res.redirect('/chat');
 });
 
-// displays messages information when thread selected
-router.post('/showMessages', function(req, res, next){
-  console.log();
+
+
+
+
+router.post('/messages/getInfo', (req, res) => {
+  console.log(req.body.threadId);
+  chatData.find({_id: req.body.threadId})
+    .then(function(doc) {
+      console.log(doc);
+      res.render('chat', { title: 'DrewUse', currentSession: req.session, chatMessages:doc});
+    })
+
 })
+
+// chatData.find({_id: req.body.threadId})
+//   .then(function(doc) {
+//     res.render('chat', { title: 'DrewUse', currentSession: req.session, chatMessages:doc});
+//   })
+
+
+// router.get('/messages/getInfo', (req, res) => {
+//   var threadId= res.get('threadId')
+//   console.log(threadId);
+//   chatData.find({_id:"5cad5ab604972513ad33d371"})
+//     .then(function(doc) {
+//   res.send(doc);
+//   });
+// });
+
+
+router.post('/messages',async (req, res) => {
+  console.log("post messages route");
+  console.log(req.body);
+  chatData.update({ _id: req.body.threadId}, {$push:{messages:[{message:req.body.message, byWho:req.body.senderName}]}}).exec();
+  res.io.emit('message', req.body);
+
+})
+
 
 module.exports = router;

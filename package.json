@@ -6,6 +6,7 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "ajax": "0.0.4",
     "body-parser": "^1.18.3",
     "cloudinary": "^1.13.2",
     "cookie-parser": "~1.4.3",
