@@ -60,10 +60,11 @@ router.post('/messages/getInfo', (req, res) => {
   chatData.find({_id: req.body.threadId})
     .then(function(doc) {
       console.log(doc);
-      res.render('chat', { title: 'DrewUse', currentSession: req.session, chatMessages:doc});
-    })
+      res.io.emit('allMessages', doc);
+      // res.render('chat', { title: 'DrewUse', currentSession: req.session, messages:doc});
+    });
 
-})
+});
 
 // chatData.find({_id: req.body.threadId})
 //   .then(function(doc) {

@@ -162,14 +162,12 @@ img{ max-width:100%;}
         </div>
         <div class="mesgs">
           <input id = "username" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
-
-
-
           <div class="msg_history">
             <div id="chatroom" class="outgoing_msg">
                   <div id="feedback" class="sent_msg">
                   </div>
-              </div>
+                  <!-- <p>{{messages}}</p> -->
+            </div>
           </div>
           <div id="input_zone" class="type_msg">
               <div class="input_msg_write">
@@ -207,6 +205,7 @@ img{ max-width:100%;}
         })
         // when messages are sent send to function to display
         socket.on('message', addMessages)
+        socket.on('allMessages', addAllMessages)
 
         // if user presses send button, it will send to post function and save to DB
         function sendMessage(chatMessage){
@@ -226,6 +225,15 @@ img{ max-width:100%;}
             $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
             $("#message").val(" ");
         }
+        function addAllMessages(message){
+            var messagesArray= message[0].messages;
+            var i;
+            for (i in messagesArray) {
+              $("#chatroom").append("<p class='message'>"+JSON.stringify(messagesArray[i])+"</p>");
+            }
+
+            $("#message").val(" ");
+          }
         // sends get request to server to get thread messages when the radio button is selected
         function sendInfoForMessages(threadId){
             console.log("Inside getMessages:",threadId);
