@@ -52,40 +52,22 @@ router.post('/newMessage', function(req,res){
 });
 
 
-
-
-
 router.post('/messages/getInfo', (req, res) => {
   console.log(req.body.threadId);
   chatData.find({_id: req.body.threadId})
     .then(function(doc) {
       console.log(doc);
       res.io.emit('allMessages', doc);
-      // res.render('chat', { title: 'DrewUse', currentSession: req.session, messages:doc});
     });
 
 });
 
-// chatData.find({_id: req.body.threadId})
-//   .then(function(doc) {
-//     res.render('chat', { title: 'DrewUse', currentSession: req.session, chatMessages:doc});
-//   })
-
-
-// router.get('/messages/getInfo', (req, res) => {
-//   var threadId= res.get('threadId')
-//   console.log(threadId);
-//   chatData.find({_id:"5cad5ab604972513ad33d371"})
-//     .then(function(doc) {
-//   res.send(doc);
-//   });
-// });
-
 
 router.post('/messages',async (req, res) => {
+  var current_timestamp = Long.fromNumber(current_millies);
   console.log("post messages route");
   console.log(req.body);
-  chatData.update({ _id: req.body.threadId}, {$push:{messages:[{message:req.body.message, byWho:req.body.senderName}]}}).exec();
+  chatData.update({ _id: req.body.threadId}, {$push:{messages:[{message:req.body.message, byWho:req.body.senderName, timestamp: current_timestamp}]}}).exec();
   res.io.emit('message', req.body);
 
 })
