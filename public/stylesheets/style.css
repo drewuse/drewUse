@@ -14,3 +14,7 @@ a.dropdown-item{
 #sellButton{
   margin-right:10px;
 }
+
+#asterisk{
+	color: red;
+}
