@@ -149,7 +149,7 @@ img{ max-width:100%;}
                 <input type="radio" name="chatSelected" value="{{this._id}}">
                 <div class="chat_img"> <img src="{{this.selectedImageUrl}}" alt="sunil"> </div>
                 <div class="chat_ib">
-                  <input id = "threadId" class="form-control disabled" value="{{this._id}}">
+                  <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
                   <h5>{{this.selectedPersonSelling}} <span class="chat_date">Dec 25</span></h5>
                   <p>Item: {{this.selectedPostTitle}}</p>
                 </div>
@@ -161,12 +161,11 @@ img{ max-width:100%;}
           </div>
         </div>
         <div class="mesgs">
-          <input id = "username" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
+          <input id = "username" type="hidden" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
           <div class="msg_history">
             <div id="chatroom" class="outgoing_msg">
                   <div id="feedback" class="sent_msg">
                   </div>
-                  <!-- <p>{{messages}}</p> -->
             </div>
           </div>
           <div id="input_zone" class="type_msg">
@@ -198,8 +197,8 @@ img{ max-width:100%;}
             $('input[type="radio"]').click(function(){
               var threadId = $("input[type='radio']:checked"). val()
               console.log("Radio Button Selected", threadId);
+              $("#chatroom").empty();
               sendInfoForMessages(threadId);
-              // getMessages();
             })
 
         })
@@ -229,7 +228,10 @@ img{ max-width:100%;}
             var messagesArray= message[0].messages;
             var i;
             for (i in messagesArray) {
-              $("#chatroom").append("<p class='message'>"+JSON.stringify(messagesArray[i])+"</p>");
+              console.log(JSON.stringify(messagesArray[i]));
+              message=  JSON.stringify(messagesArray[i].message);
+              byWho = JSON.stringify(messagesArray[i].byWho);
+              $("#chatroom").append("<p class='message'>"+eval(byWho)+": "+eval(message)+"</p>");
             }
 
             $("#message").val(" ");
@@ -238,43 +240,8 @@ img{ max-width:100%;}
         function sendInfoForMessages(threadId){
             console.log("Inside getMessages:",threadId);
             var xhttp = new XMLHttpRequest();
-            // xhttp.onreadystatechange = function() {
-            //       if (xhttp.readyState == XMLHttpRequest.DONE) {
-            //           response= xhttp.responseText
-            //           alert(response);
-            //
-            //       }
-            //   }
             xhttp.open('POST', '/chat/messages/getInfo', true);
             xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
             xhttp.send('threadId='+threadId);
         }
-
-
-        // function getMessages(){
-        //   var xhttp = new XMLHttpRequest();
-        //   xhttp.onreadystatechange = function() {
-        //       if (xhttp.readyState == XMLHttpRequest.DONE) {
-        //           response= xhttp.responseText
-        //           alert(response);
-        //           // addMessages(response);
-        //       }
-        //   }
-        //   xhttp.open('GET', '/chat/messages/getInfo', true);
-        //   xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        //   xhttp.send();
-        // }
-
-        // xhttp.open("POST", "/chat/messages/getInfo", true);
-        // xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-        // xhttp.send("threadId="+threadId);
-        // xhttp.onreadystatechange = function() {
-        //     if (xhttp.readyState == XMLHttpRequest.DONE) {
-        //         response= xhttp.responseText
-        //         alert(response);
-        //         // addMessages(response);
-        //     }
-        // }
-
-
     </script>
