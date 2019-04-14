@@ -1,12 +1,15 @@
-var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
+var bodyParser = require('body-parser');
+var createError = require('http-errors');
 var logger = require('morgan');
+
 
 var indexRouter = require('./routes/index');
 var sellRouter = require('./routes/sellForm');
 var profileRouter = require('./routes/profile')
+var chatRouter = require('./routes/chat');
 var googleAuthRouter = require('./routes/authentication')
 var logoutRouter = require('./routes/logout')
 
@@ -17,6 +20,36 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 
 var app = express();
+var server = require('http').Server(app);
+var io = require('socket.io')(server);
+
+// io.on('connection', function(socket){
+//   socket.on('chat message', function(msg){
+//     io.emit('chat message', msg);
+//   });
+// });
+io.on('connection', (socket) => {
+	console.log('New user connected')
+
+	//default username
+	socket.username = "Anonymous"
+
+    //listen on change_username
+    socket.on('change_username', (data) => {
+        socket.username = data.username
+    })
+
+    //listen on new_message
+    socket.on('new_message', (data) => {
+        //broadcast the new message
+        io.sockets.emit('new_message', {message : data.message, username : socket.username});
+    })
+
+    //listen on typing
+    socket.on('typing', (data) => {
+    	socket.broadcast.emit('typing', {username : socket.username})
+    })
+})
 
 // view engine setup
 var handlebars = hbs.create({
@@ -29,6 +62,14 @@ var handlebars = hbs.create({
   defaultLayout:'layout.hbs',
   layoutsDir:__dirname+'/views/layouts/'
 });
+
+app.use(function(req,res,next){
+  res.io =io;
+  next();
+});
+
+
+
 app.engine('hbs', handlebars.engine);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
@@ -45,6 +86,7 @@ app.use(expressSession({
   resave: false,
   saveUninitialized: false,
 }));
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -52,6 +94,7 @@ app.use(passport.session());
 app.use('/', indexRouter);
 app.use('/sell', sellRouter);
 app.use('/profile', profileRouter);
+app.use('/chat',chatRouter);
 app.use('/auth/google/callback', googleAuthRouter);
 app.use('/logout', logoutRouter);
 
@@ -68,10 +111,8 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('error', { title: 'DrewUse'});
 });
 
 
-
-
-module.exports = app;
+module.exports = {app:app, server:server};

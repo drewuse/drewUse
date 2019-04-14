@@ -4,14 +4,19 @@
     <meta charset="utf-8">
     <link rel="icon" href="/images/shop.png" sizes="16x16">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <!-- Other CSS -->
     <link rel="stylesheet" href="/stylesheets/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css" integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.js"></script>
+
   </head>
-  
+
   {{#if currentSession.passport}}
   <nav class="navbar navbar-expand-lg navbar-light bg-dark">
     <a class="navbar-brand text-white" href="/">
@@ -26,6 +31,9 @@
       <ul class="navbar-nav ml-auto">
         <li class="nav-item">
           <a class="btn btn-danger my-2 my-sm-0" id="sellButton" href="/sell" role="button">Sell</a>
+        </li>
+        <li class="nav-item">
+          <a class="btn btn-primary my-2 my-sm-0" href="/chat" role="button">Chat</a>
         </li>
         <li class="nav-item dropdown">
           <button class="btn btn-default dropdown-toggle text-white" type="button" data-toggle="dropdown">
