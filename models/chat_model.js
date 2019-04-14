@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 var chatDataSchema= new Schema({
   // Initial info
   users:[{email:String}],
-  messages:[{message:String, byWho: String, timestamp:Date}],
+  messages:[{message:String, byWho: String, timestamp:Number}],
   dateChatCreated: Number,
   dateChatCreatedComputed: String,
   dateChatStartedBy: String,
