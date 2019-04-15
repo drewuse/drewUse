@@ -1,41 +1,55 @@
 <br>
 <h3>Start Selling</h3>
     <form action="/sell/insert" method="post" enctype="multipart/form-data">
+
         <!-- Title Input -->
-        <div class="input">
-          <label for="title">Title <span id="asterisk">*</span></label>
-          <input required type="text" id="title" name="title">
+        <div class="form-group row">
+          <label for="title" class="col-sm-2 col-form-label">Title <span id="asterisk">*</span></label>
+          <div class="col-sm-10">
+            <input required type="text" id="title" name="title">
+          </div>
         </div>
+        
         <!-- Price Input -->
-        <div class="input">
-          <label for="content">Price <span id="asterisk">*</span></label>
-          <input required type="number" id="price" name="price">
+        <div class="form-group row">
+          <label for="content" class="col-sm-2 col-form-label">Price <span id="asterisk">*</span></label>
+          <div class="col-sm-10">
+            <input required type="number" id="price" name="price">
+          </div>
         </div>
+        
         <!-- Image Input -->
-        <div class="input">
-          <label for="image">Image <span id="asterisk">*</span></label>
-          <input required type="file" id="image" name="image">
+        <div class="form-group row">
+          <label for="image" class="col-sm-2 col-form-label">Image <span id="asterisk">*</span></label>
+          <div class="col-sm-10">
+            <input required type="file" id="image" name="image">
+          </div>
         </div>
+        
         <!-- Condition Dropdown -->
-        <div class="input">
-          <label for="condition">Book Condition: <span id="asterisk">*</span></label>
-          <select required class="form-control" id="condition" name="condition">
-            <option value="">Choose a book condition...</option>
-            <option value="new">New</option>
-            <option value="used-vg">Used - Very Good</option>
-            <option value="used-gd">Used - Good</option>
-            <option value="used-ac">Used - Acceptable</option>
-          </select>
+        <div class="form-group row">
+          <label for="condition" class="col-sm-2 col-form-label">Book Condition <span id="asterisk">*</span></label>
+          <div class="col-sm-5">
+            <select required class="form-control" id="condition" name="condition">
+              <option value="">Choose a book condition...</option>
+              <option value="new">New</option>
+              <option value="used-vg">Used - Very Good</option>
+              <option value="used-gd">Used - Good</option>
+              <option value="used-ac">Used - Acceptable</option>
+            </select>
+          </div>
         </div>
         <!-- Book Type Dropdown -->
-        <div class="input">
-          <label for="booktype">Book Type: <span id="asterisk">*</span></label>
-          <select required class="form-control" id="booktype" name="booktype">
-            <option value="">Choose a book type...</option>
-            <option value="textbook">Textbook</option>
-            <option value="course-rr">Required Course Reading (non-textbook)</option>
-            <option value="other">Other (non-textbook)</option>
-          </select>
+        <div class="form-group row">
+          <label for="booktype" class="col-sm-2 col-form-label">Book Type <span id="asterisk">*</span></label>
+          <div class="col-sm-5">
+            <select required class="form-control" id="booktype" name="booktype">
+              <option value="">Choose a book type...</option>
+              <option value="textbook">Textbook</option>
+              <option value="course-rr">Required Course Reading (non-textbook)</option>
+              <option value="other">Other (non-textbook)</option>
+            </select>
+          </div>
         </div>
         <!-- Item Description Input -->
         <div class="input">
