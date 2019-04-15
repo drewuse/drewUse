@@ -7,6 +7,7 @@ var bodyParser = require('body-parser')
 var $ = require("jquery");
 var Long = require('mongodb').Long;
 var current_millies = new Date().getTime();
+var querystring = require('querystring');
 
 
 
@@ -21,6 +22,7 @@ router.use(bodyParser.urlencoded({ extended: false }))
 
 /* GET home page. */
 router.get('/', checkAuthentication, function(req, res, next) {
+  preselectedThread = req.query.preselectedThread ? req.query.preselectedThread : '';
   chatData.find({users:
                   {$elemMatch :
                     {
@@ -29,11 +31,11 @@ router.get('/', checkAuthentication, function(req, res, next) {
                   }
                 }
                 ).sort({ dateChatCreated: -1 }).then(function(doc) {
-  res.render('chat', { title: 'DrewUse', currentSession: req.session, chats:doc});
+  res.render('chat', { title: 'DrewUse', currentSession: req.session, chats:doc, preselectedThread:preselectedThread});
   });
 });
 
-router.post('/newMessage', function(req,res){
+router.post('/newMessage', checkAuthentication, function(req,res){
   var current_timestamp = Long.fromNumber(current_millies);
   var date = new Date(current_millies);
   var dateReadable = date.toString();
@@ -47,12 +49,13 @@ router.post('/newMessage', function(req,res){
     selectedPersonSelling: req.body.selectedPersonSelling
   }
   var data = new chatData(chat);
-  data.save();
-  res.redirect('/chat');
+  data.save((err, doc) => {
+    res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+  });
 });
 
 
-router.post('/messages/getInfo', (req, res) => {
+router.post('/messages/getInfo', checkAuthentication, (req, res) => {
   console.log(req.body.threadId);
   chatData.find({_id: req.body.threadId})
     .then(function(doc) {
@@ -63,7 +66,7 @@ router.post('/messages/getInfo', (req, res) => {
 });
 
 
-router.post('/messages',async (req, res) => {
+router.post('/messages', checkAuthentication, async (req, res) => {
   var current_timestamp = Long.fromNumber(current_millies);
   console.log("post messages route");
   console.log(req.body);
