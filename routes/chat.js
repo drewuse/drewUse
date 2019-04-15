@@ -20,7 +20,7 @@ router.use(bodyParser.urlencoded({ extended: false }))
 
 
 /* GET home page. */
-router.get('/' , function(req, res, next) {
+router.get('/', checkAuthentication, function(req, res, next) {
   chatData.find({users:
                   {$elemMatch :
                     {
@@ -71,6 +71,17 @@ router.post('/messages',async (req, res) => {
   res.io.emit('message', req.body);
 
 })
+
+//authenticate a user is logged in
+function checkAuthentication(req,res,next){
+    if(req.isAuthenticated()){
+        //req.isAuthenticated() will return true if user is logged in
+        next();
+    } else{
+      req.session.authorigin = 'chat';
+      res.redirect('/auth/google/callback')
+    }
+}
 
 
 module.exports = router;

@@ -51,11 +51,14 @@ img{ max-width:100%;}
   width: 88%;
 }
 
-.chat_people{ overflow:hidden; clear:both;}
+.chat_people{
+  overflow:hidden;
+  clear:both;
+  padding: 20px 10px;
+}
 .chat_list {
   border-bottom: 1px solid #c4c4c4;
   margin: 0;
-  padding: 18px 16px 10px;
 }
 .inbox_chat { height: 550px; overflow-y: scroll;}
 
@@ -145,17 +148,19 @@ img{ max-width:100%;}
           <div class="inbox_chat">
             <div class="chat_list">
               {{# each chats }}
-              <div class="chat_people">
-                <input type="radio" name="chatSelected" value="{{this._id}}">
+              <div class="chat_people" threadId="{{this._id}}">
                 <div class="chat_img"> <img src="{{this.selectedImageUrl}}" alt="sunil"> </div>
                 <div class="chat_ib">
                   <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
-                  <h5>{{this.selectedPersonSelling}} <span class="chat_date">Dec 25</span></h5>
-                  <p>Item: {{this.selectedPostTitle}}</p>
+                  {{#ifEquals this.selectedPersonSelling ../currentSession.passport.user._json.email}}
+                    <h5>Interested buyer for "{{this.selectedPostTitle}}"<span class="chat_date">Dec 25</span></h5>
+                  {{/ifEquals}}
+                  {{#ifEquals this.dateChatStartedBy ../currentSession.passport.user._json.email}}
+                    <h5>Seller of "{{this.selectedPostTitle}}"<span class="chat_date">Dec 25</span></h5>
+                  {{/ifEquals}}
                 </div>
               </div>
               <hr>
-              <br>
               {{/each}}
             </div>
           </div>
@@ -187,16 +192,17 @@ img{ max-width:100%;}
           // When send is pressed, get imporant values and run sendMessage function to save to DB
             $("#send_message").click(() => {
               // TODO: check to see if user has not selected a thread, dont allow to send if they are have not selected
-                var threadId = $("input[type='radio']:checked").val()
+                var threadId = window.sessionStorage.getItem('currentThread');
                 var chatMessage = {
                     name: $("#username").val(), chat: $("#message").val(), thread: threadId
                 }
                 sendMessage(chatMessage)
             })
             // if a thread is selected show the messages specific to that thread
-            $('input[type="radio"]').click(function(){
-              var threadId = $("input[type='radio']:checked"). val()
-              console.log("Radio Button Selected", threadId);
+            $('.chat_people').click(function(){
+              console.log('Chat Clicked');
+              var threadId = $(this).attr('threadId');
+              window.sessionStorage.setItem('currentThread', threadId);
               $("#chatroom").empty();
               sendInfoForMessages(threadId);
             })
