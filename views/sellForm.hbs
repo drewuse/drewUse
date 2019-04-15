@@ -4,7 +4,7 @@
 
         <!-- Title Input -->
         <div class="form-group row">
-          <label for="title" class="col-sm-2 col-form-label">Title <span id="asterisk">*</span></label>
+          <label for="title" class="col-sm-2 col-form-label"><strong>Title</strong> <span id="asterisk">*</span></label>
           <div class="col-sm-10">
             <input required type="text" id="title" name="title">
           </div>
@@ -12,7 +12,7 @@
         
         <!-- Price Input -->
         <div class="form-group row">
-          <label for="content" class="col-sm-2 col-form-label">Price <span id="asterisk">*</span></label>
+          <label for="content" class="col-sm-2 col-form-label"><strong>Price</strong> <span id="asterisk">*</span></label>
           <div class="col-sm-10">
             <input required type="number" id="price" name="price">
           </div>
@@ -20,7 +20,7 @@
         
         <!-- Image Input -->
         <div class="form-group row">
-          <label for="image" class="col-sm-2 col-form-label">Image <span id="asterisk">*</span></label>
+          <label for="image" class="col-sm-2 col-form-label"><strong>Image</strong> <span id="asterisk">*</span></label>
           <div class="col-sm-10">
             <input required type="file" id="image" name="image">
           </div>
@@ -28,7 +28,7 @@
         
         <!-- Condition Dropdown -->
         <div class="form-group row">
-          <label for="condition" class="col-sm-2 col-form-label">Book Condition <span id="asterisk">*</span></label>
+          <label for="condition" class="col-sm-2 col-form-label"><strong>Book Condition</strong> <span id="asterisk">*</span></label>
           <div class="col-sm-5">
             <select required class="form-control" id="condition" name="condition">
               <option value="">Choose a book condition...</option>
@@ -41,7 +41,7 @@
         </div>
         <!-- Book Type Dropdown -->
         <div class="form-group row">
-          <label for="booktype" class="col-sm-2 col-form-label">Book Type <span id="asterisk">*</span></label>
+          <label for="booktype" class="col-sm-2 col-form-label"><strong>Book Type</strong> <span id="asterisk">*</span></label>
           <div class="col-sm-5">
             <select required class="form-control" id="booktype" name="booktype">
               <option value="">Choose a book type...</option>
@@ -51,10 +51,13 @@
             </select>
           </div>
         </div>
+
         <!-- Item Description Input -->
-        <div class="input">
-          <label for="author">Additional Description</label>
-          <input type="text" id="description" name="description">
+        <div class="form-group row">
+          <label for="author" class="col-sm-2 col-form-label">Additional Description</label>
+          <div class="col-sm-10">
+            <input type="text" id="description" name="description">
+          </div>
         </div>
         <button class="btn btn-primary" type="submit">Start Selling</button>
     </form>
