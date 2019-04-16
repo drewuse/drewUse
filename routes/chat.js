@@ -23,15 +23,15 @@ router.use(bodyParser.urlencoded({ extended: false }))
 /* GET home page. */
 router.get('/', checkAuthentication, function(req, res, next) {
   preselectedThread = req.query.preselectedThread ? req.query.preselectedThread : '';
-  chatData.find({users:
+  chatData.find({allParticipants:
                   {$elemMatch :
                     {
                     email: req.session.passport.user._json.email
                     }
                   }
                 }
-                ).sort({ dateChatCreated: -1 }).then(function(doc) {
-  res.render('chat', { title: 'DrewUse', currentSession: req.session, chats:doc, preselectedThread:preselectedThread});
+                ).populate('item').sort({ dateChatCreated: -1 }).then(function(doc) {
+    res.render('chat', { title: 'DrewUse', currentUser: req.session.passport.user._json.email, chats:doc, preselectedThread:preselectedThread});
   });
 });
 
@@ -39,14 +39,13 @@ router.post('/newMessage', checkAuthentication, function(req,res){
   var current_timestamp = Long.fromNumber(current_millies);
   var date = new Date(current_millies);
   var dateReadable = date.toString();
-  var chat ={
-    users:[{email: req.session.passport.user._json.email},{email: req.body.selectedPersonSelling} ],
+  var chat = {
+    item: mongoose.Types.ObjectId(req.body.itemId),
+    seller: req.body.seller,
+    interestedBuyer: req.session.passport.user._json.email,
+    allParticipants:[ {email: req.session.passport.user._json.email}, {email: req.body.seller} ],
     dateChatCreated: current_timestamp,
-    dateChatCreatedComputed: dateReadable,
-    dateChatStartedBy: req.session.passport.user._json.email,
-    selectedImageUrl: req.body.selectedImageUrl,
-    selectedPostTitle: req.body.selectedPostTitle,
-    selectedPersonSelling: req.body.selectedPersonSelling
+    dateChatCreatedComputed: dateReadable
   }
   var data = new chatData(chat);
   data.save((err, doc) => {
@@ -59,7 +58,7 @@ router.post('/messages/getInfo', checkAuthentication, (req, res) => {
   console.log(req.body.threadId);
   chatData.find({_id: req.body.threadId})
     .then(function(doc) {
-      console.log(doc);
+      // console.log(doc);
       res.io.emit('allMessages', doc);
     });
 

@@ -188,14 +188,14 @@ img{ max-width:100%;}
         <div class="chat_list">
           {{# each chats }}
           <div class="chat_people" threadId="{{this._id}}">
-            <span class="chat_img"> <img src="{{this.selectedImageUrl}}" alt="sunil"> </span>
+            <span class="chat_img"> <img src="{{this.item.image_url}}" alt="Image for product '{{this.item.title}}'"> </span>
             <span class="chat_ib">
               <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
-              <strong><h5>{{this.selectedPostTitle}}</h5></strong>
-              {{#ifEquals this.selectedPersonSelling ../currentSession.passport.user._json.email}}
+              <strong><h5>{{this.item.title}}</h5></strong>
+              {{#ifEquals this.seller ../currentUser}}
                 <span class="badge badge-success">Interested Buyer</span>
               {{/ifEquals}}
-              {{#ifEquals this.dateChatStartedBy ../currentSession.passport.user._json.email}}
+              {{#ifEquals this.interestedBuyer ../currentUser}}
                 <span class="badge badge-info">Product Seller</span>
               {{/ifEquals}}
               <p class="chat_date">Last chatted: </p>
