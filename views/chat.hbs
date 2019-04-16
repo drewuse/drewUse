@@ -47,9 +47,13 @@ img{ max-width:100%;}
 
 .srch_bar .input-group-addon { margin: 0 0 0 -27px;}
 
-.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}
+/*.chat_ib h5{ font-size:15px; color:#464646; margin:0 0 8px 0;}*/
 
-.chat_ib h5 span{ font-size:13px; float:right;}
+/*.chat_ib h5 span{ font-size:13px; float:right;}*/
+
+.chat_date {
+  padding-top: 5px;
+}
 
 .chat_ib p{ font-size:14px; color:#989898; margin:auto}
 
@@ -68,7 +72,7 @@ img{ max-width:100%;}
   background: #e8eaef;
   overflow:hidden;
   clear:both;
-  padding: 0 0 15px;
+  padding: 7px 0 7px;
 }
 
 .chat_list {
@@ -175,7 +179,7 @@ img{ max-width:100%;}
 </style>
 
 <br>
-<h3 class=" text-center">Messaging</h3>
+<h3 class=" text-center">Chat</h3>
 
 <div class="messaging">
   <div class="inbox_msg">
@@ -187,12 +191,14 @@ img{ max-width:100%;}
             <span class="chat_img"> <img src="{{this.selectedImageUrl}}" alt="sunil"> </span>
             <span class="chat_ib">
               <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
+              <strong><h5>{{this.selectedPostTitle}}</h5></strong>
               {{#ifEquals this.selectedPersonSelling ../currentSession.passport.user._json.email}}
-                <h5>Interested buyer for "{{this.selectedPostTitle}}"<span class="chat_date">Dec 25</span></h5>
+                <span class="badge badge-success">Interested Buyer</span>
               {{/ifEquals}}
               {{#ifEquals this.dateChatStartedBy ../currentSession.passport.user._json.email}}
-                <h5>Seller of "{{this.selectedPostTitle}}"</h5><span class="chat_date">Dec 25</span>
+                <span class="badge badge-info">Product Seller</span>
               {{/ifEquals}}
+              <p class="chat_date">Last chatted: </p>
             </span>
           </div>
           {{/each}}
