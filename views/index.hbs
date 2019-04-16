@@ -131,9 +131,8 @@
 
             {{else}}
             <form action="/chat/newMessage" method="POST">
-              <input class="card-text" name="selectedImageUrl" value="{{this.image_url}}" style="display:none;"></input>
-              <input class="card-text" name="selectedPostTitle" value="{{this.title}}" style="display:none;"></input>
-              <input class="card-text" name="selectedPersonSelling" value="{{this.postedBy}}" style="display:none;"></input>
+              <input class="card-text" name="itemId" value="{{this._id}}" style="display:none;"></input>
+              <input class="card-text" name="seller" value="{{this.postedBy}}" style="display:none;"></input>
               <center><button type="submit" class="btn btn-success">I'm Interested</button></center>
             </form>
             {{/if}}
