@@ -193,10 +193,10 @@ img{ max-width:100%;}
             <span class="chat_ib">
               <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
               <strong><h5>{{this.item.title}}</h5></strong>
-              {{#ifEquals this.seller ../currentUser}}
+              {{#ifEquals this.seller ../currentSession.passport.user._json.email}}
                 <span class="badge badge-success">Interested Buyer</span>
               {{/ifEquals}}
-              {{#ifEquals this.interestedBuyer ../currentUser}}
+              {{#ifEquals this.interestedBuyer ../currentSession.passport.user._json.email}}
                 <span class="badge badge-info">Product Seller</span>
               {{/ifEquals}}
               <p class="chat_date">Last chatted: </p>
@@ -207,7 +207,7 @@ img{ max-width:100%;}
       </div>
     </div>
     <div class="mesgs">
-      <input id = "username" type="hidden" class="form-control disabled" value="{{currentUser}}">
+      <input id = "username" type="hidden" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
       <div class="msg_history">
         <div id="chatroom" class="outgoing_msg">
               <div id="feedback" class="sent_msg">

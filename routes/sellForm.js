@@ -3,7 +3,6 @@ var router = express.Router();
 var mongoose= require('mongoose');
 var itemData = require('../models/item_model');
 var Long = require('mongodb').Long;
-var current_millies = new Date().getTime();
 // For photo upload and storage
 const multer = require('multer');
 const cloudinary = require('cloudinary');
@@ -43,6 +42,7 @@ router.get('/', checkAuthentication, function(req, res, next) {
 
 // post request to create listings
 router.post('/insert', imageParser.single('image'),  /* this middleware processes the image, adds it to cloudinary, and sends the access parameters in the req object */ (req, res) => {
+  var current_millies = new Date().getTime();
   var current_timestamp = Long.fromNumber(current_millies);
   var date = new Date(current_millies);
   var dateReadable = date.toString();
