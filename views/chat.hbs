@@ -226,15 +226,15 @@ img{ max-width:100%;}
 <script>
   var socket = io.connect();
   $(() => {
-    // When send is pressed, get imporant values and run sendMessage function to save to DB
+      // Setup listener for clicking the send-message button
       $("#send_message").click(() => {
-          var threadId = window.sessionStorage.getItem('currentThread');
-          if (threadId) {
-            var chatMessage = {
-                name: $("#username").val(), chat: $("#message").val(), thread: threadId
-            }
-            sendMessage(chatMessage);
-          }
+        sendMessage();
+      });
+      // Setup listener for pressing 'enter' in the message input field
+      $('#message').keyup(function(e){
+        if(e.keyCode == 13) {
+          sendMessage();
+        }
       });
       // if a thread is selected show the messages specific to that thread
       $('.chat_people').click(function(){
@@ -262,19 +262,28 @@ img{ max-width:100%;}
     sendInfoForMessages(threadId);
   }
 
-  // if user presses send button, it will send to post function and save to DB
-  function sendMessage(chatMessage){
+  // Send message to client to save to DB and dispatch to both participants' chat rooms
+  function sendMessage(chatMessage) {
+      // Construct message object
+      var threadId = window.sessionStorage.getItem('currentThread');
+      if (threadId) {
+        var chatMessage = {
+          name: $("#username").val(), chat: $("#message").val(), thread: threadId
+        }
+      }
       var senderName = chatMessage.name;
       var message = chatMessage.chat;
       var threadId = chatMessage.thread;
-
+      
       console.log(senderName, message, threadId);
-
+      
+      // Send via AJAX to server
       var xhttp = new XMLHttpRequest();
       xhttp.open("POST", "/chat/messages", true);
       xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
       xhttp.send("senderName="+senderName+"&message="+message+"&threadId="+threadId);
   }
+  
   // display messages sent on message dialog
   function addMessages(message){
       $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
