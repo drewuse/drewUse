@@ -69,10 +69,11 @@ img{ max-width:100%;}
 }
 
 .chat_people{
-  background: #e8eaef;
+  background: white;
   overflow:hidden;
   clear:both;
   padding: 7px 0 7px;
+  border-bottom: solid thin;
 }
 
 .chat_list {
@@ -83,8 +84,8 @@ img{ max-width:100%;}
 .inbox_chat { height: 595px; overflow-y: scroll;}
 
 .active_chat{
-  /*background:#ebebeb;*/
-  background: white;
+  background: #e8eaef;
+  /*border: solid medium;*/
 }
 
 .inactive_chat{ background: #e8eaef;}
@@ -192,10 +193,10 @@ img{ max-width:100%;}
             <span class="chat_ib">
               <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
               <strong><h5>{{this.item.title}}</h5></strong>
-              {{#ifEquals this.seller ../currentUser}}
+              {{#ifEquals this.seller ../currentSession.passport.user._json.email}}
                 <span class="badge badge-success">Interested Buyer</span>
               {{/ifEquals}}
-              {{#ifEquals this.interestedBuyer ../currentUser}}
+              {{#ifEquals this.interestedBuyer ../currentSession.passport.user._json.email}}
                 <span class="badge badge-info">Product Seller</span>
               {{/ifEquals}}
               <p class="chat_date">Last chatted: </p>
@@ -206,7 +207,7 @@ img{ max-width:100%;}
       </div>
     </div>
     <div class="mesgs">
-      <input id = "username" type="hidden" class="form-control disabled" value="{{currentUser}}">
+      <input id = "username" type="hidden" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
       <div class="msg_history">
         <div id="chatroom" class="outgoing_msg">
               <div id="feedback" class="sent_msg">
@@ -226,15 +227,15 @@ img{ max-width:100%;}
 <script>
   var socket = io.connect();
   $(() => {
-    // When send is pressed, get imporant values and run sendMessage function to save to DB
+      // Setup listener for clicking the send-message button
       $("#send_message").click(() => {
-          var threadId = window.sessionStorage.getItem('currentThread');
-          if (threadId) {
-            var chatMessage = {
-                name: $("#username").val(), chat: $("#message").val(), thread: threadId
-            }
-            sendMessage(chatMessage);
-          }
+        sendMessage();
+      });
+      // Setup listener for pressing 'enter' in the message input field
+      $('#message').keyup(function(e){
+        if(e.keyCode == 13) {
+          sendMessage();
+        }
       });
       // if a thread is selected show the messages specific to that thread
       $('.chat_people').click(function(){
@@ -262,19 +263,28 @@ img{ max-width:100%;}
     sendInfoForMessages(threadId);
   }
 
-  // if user presses send button, it will send to post function and save to DB
-  function sendMessage(chatMessage){
+  // Send message to client to save to DB and dispatch to both participants' chat rooms
+  function sendMessage(chatMessage) {
+      // Construct message object
+      var threadId = window.sessionStorage.getItem('currentThread');
+      if (threadId) {
+        var chatMessage = {
+          name: $("#username").val(), chat: $("#message").val(), thread: threadId
+        }
+      }
       var senderName = chatMessage.name;
       var message = chatMessage.chat;
       var threadId = chatMessage.thread;
-
+      
       console.log(senderName, message, threadId);
-
+      
+      // Send via AJAX to server
       var xhttp = new XMLHttpRequest();
       xhttp.open("POST", "/chat/messages", true);
       xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
       xhttp.send("senderName="+senderName+"&message="+message+"&threadId="+threadId);
   }
+  
   // display messages sent on message dialog
   function addMessages(message){
       $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")

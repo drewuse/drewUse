@@ -31,7 +31,7 @@ router.get('/', checkAuthentication, function(req, res, next) {
                   }
                 }
                 ).populate('item').sort({ dateChatCreated: -1 }).then(function(doc) {
-    res.render('chat', { title: 'DrewUse', currentUser: req.session.passport.user._json.email, chats:doc, preselectedThread:preselectedThread});
+    res.render('chat', { title: 'DrewUse', currentSession: req.session, chats:doc, preselectedThread:preselectedThread});
   });
 });
 
