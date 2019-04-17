@@ -14,6 +14,7 @@ var querystring = require('querystring');
 
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
 
+var socket_ids = [];
 
 
 router.use(bodyParser.json());
@@ -21,7 +22,8 @@ router.use(bodyParser.urlencoded({ extended: false }))
 
 
 /* GET home page. */
-router.get('/', checkAuthentication, function(req, res, next) {
+router.get('/', checkAuthentication, setupSocketListeners, function(req, res, next) {
+  // Setup chat data and render chat page
   preselectedThread = req.query.preselectedThread ? req.query.preselectedThread : '';
   chatData.find({allParticipants:
                   {$elemMatch :
@@ -34,6 +36,28 @@ router.get('/', checkAuthentication, function(req, res, next) {
     res.render('chat', { title: 'DrewUse', currentUser: req.session.passport.user._json.email, chats:doc, preselectedThread:preselectedThread});
   });
 });
+
+function setupSocketListeners(req, res, next) {
+  // Setup socket.io connections for real-time chat
+  var io = req.app.get('socketio');
+  io.on('connection', (socket) => {
+    // Prevent duplicate emits by removing the connection listeners for any subsequent connections with the same ID
+    /* This hack was inspired by this SO answer: https://stackoverflow.com/a/43685951 */
+    socket_ids.push(socket.id);
+    if (socket_ids[socket_ids.length-1] === socket.id) {
+      io.removeAllListeners('connection');
+    }
+    // Add message listener
+
+    // test two-way socket connection
+    console.log('Emitting from chat.js ...');
+    socket.emit('hi');
+    socket.on('send to chat.js', (data) => {
+      console.log('socket event recd from client in chat.js');
+    });
+  })
+  next();
+}
 
 router.post('/newMessage', checkAuthentication, function(req,res){
   var current_timestamp = Long.fromNumber(current_millies);

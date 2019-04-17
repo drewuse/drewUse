@@ -23,13 +23,9 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// io.on('connection', function(socket){
-//   socket.on('chat message', function(msg){
-//     io.emit('chat message', msg);
-//   });
-// });
-io.on('connection', (socket) => {
-	console.log('New user connected')
+app.set('socketio', io);
+
+io.on('connect', (socket) => {
 
 	//default username
 	socket.username = "Anonymous"
@@ -49,6 +45,13 @@ io.on('connection', (socket) => {
     socket.on('typing', (data) => {
     	socket.broadcast.emit('typing', {username : socket.username})
     })
+
+    // test two-way socket connection
+    socket.on('send to app.js', (data) => {
+      console.log('socket event recd from client in app.js');
+    })
+
+    // listen for messages
 })
 
 // view engine setup

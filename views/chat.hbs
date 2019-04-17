@@ -224,31 +224,40 @@ img{ max-width:100%;}
 </div>
 
 <script>
-  var socket = io.connect();
-  $(() => {
-      // Setup listener for clicking the send-message button
-      $("#send_message").click(() => {
-        sendMessage();
-      });
-      // Setup listener for pressing 'enter' in the message input field
-      $('#message').keyup(function(e){
-        if(e.keyCode == 13) {
-          sendMessage();
-        }
-      });
-      // if a thread is selected show the messages specific to that thread
-      $('.chat_people').click(function(){
-        console.log('Thread Clicked');
-        var threadId = $(this).attr('threadId');  // Get thread id
-        selectThread(threadId);
-      })
-    if ('{{preselectedThread}}') {
-      selectThread('{{preselectedThread}}');
+  // Setup listener for clicking the send-message button
+  $("#send_message").click(() => {
+    sendMessage();
+  });
+  // Setup listener for pressing 'enter' in the message input field
+  $('#message').keyup(function(e){
+    if(e.keyCode == 13) {
+      sendMessage();
     }
-  })
-  // when messages are sent send to function to display
+  });
+  // Handle selection of a specific thread
+  $('.chat_people').click(function(){
+    console.log('Thread Clicked');
+    var threadId = $(this).attr('threadId');  // Get thread id
+    selectThread(threadId);
+  });
+  if ('{{preselectedThread}}') {
+    selectThread('{{preselectedThread}}');
+  }
+  
+  // Setup socket.io client
+  var socket = io.connect();
   socket.on('message', addMessages)
   socket.on('allMessages', addAllMessages)
+  
+  // test two-way socket communication
+  socket.on('hi', () => {
+    console.log('socket event recd from chat.js in client');
+    socket.emit('send to chat.js');
+    socket.emit('send to app.js');
+    console.log('both events emitted from client');
+  });
+
+  console.log('hel');
 
   function selectThread(threadId) {
     console.log('Thread Selected');
