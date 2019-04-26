@@ -14,7 +14,8 @@ var querystring = require('querystring');
 
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
 
-var socket_ids = [];
+var root_socket_ids = [];
+var user_socket_ids = [];
 
 
 router.use(bodyParser.json());
@@ -33,29 +34,57 @@ router.get('/', checkAuthentication, setupSocketListeners, function(req, res, ne
                   }
                 }
                 ).populate('item').sort({ dateChatCreated: -1 }).then(function(doc) {
-    res.render('chat', { title: 'DrewUse', currentUser: req.session.passport.user._json.email, chats:doc, preselectedThread:preselectedThread});
+    res.render('chat', { title: 'DrewUse', currentSession: req.session, chats:doc, preselectedThread:preselectedThread});
   });
 });
 
 function setupSocketListeners(req, res, next) {
   // Setup socket.io connections for real-time chat
   var io = req.app.get('socketio');
-  io.on('connection', (socket) => {
+  // io.on('connection', (socket) => {
+  //   // Prevent duplicate emits by removing the connection listeners for any subsequent connections with the same ID
+  //   /* This hack was inspired by this SO answer: https://stackoverflow.com/a/43685951 */
+  //   root_socket_ids.push(socket.id);
+  //   if (root_socket_ids[root_socket_ids.length-1] === socket.id) {
+  //     io.removeAllListeners('connection');
+  //   }
+
+  //   console.log('reached here');
+
+  //   // // test two-way socket connection
+  //   // console.log('Emitting from chat.js ...');
+  //   // socket.emit('hi');
+  //   // socket.on('send to chat.js', (data) => {
+  //   //   console.log('socket event recd from client in chat.js');
+  //   // });
+  // })
+
+  // Initialize namespace for user
+  // var x = io.of('/hello');
+  // x.on('connect', socket => {
+  //   console.log('hhhdhdhdhdh');
+  //   // socket.on('hey', (d) => {
+  //   //   console.log('ppppppp');
+  //   // })
+  // })
+
+  var username = req.session.passport.user._json.email.match(/[^@]+/)[0];
+  var userSocket = io.of(`/${username}`);
+  userSocket.on('connect', socket => {
     // Prevent duplicate emits by removing the connection listeners for any subsequent connections with the same ID
     /* This hack was inspired by this SO answer: https://stackoverflow.com/a/43685951 */
-    socket_ids.push(socket.id);
-    if (socket_ids[socket_ids.length-1] === socket.id) {
-      io.removeAllListeners('connection');
+    user_socket_ids.push(socket.id);
+    if (user_socket_ids[user_socket_ids.length-1] === socket.id) {
+      userSocket.removeAllListeners('connect');
     }
+    console.log(`User ${req.session.passport.user._json.email} namespace connected.`);
     // Add message listener
-
-    // test two-way socket connection
-    console.log('Emitting from chat.js ...');
-    socket.emit('hi');
-    socket.on('send to chat.js', (data) => {
-      console.log('socket event recd from client in chat.js');
-    });
+    socket.on('message', data => {
+      // add to db and emit to receiving user's namespace
+      console.log('Message received:', data);
+    })
   })
+
   next();
 }
 

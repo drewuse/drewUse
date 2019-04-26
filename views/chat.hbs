@@ -192,10 +192,10 @@ img{ max-width:100%;}
             <span class="chat_ib">
               <input id = "threadId" type="hidden" class="form-control disabled" value="{{this._id}}">
               <strong><h5>{{this.item.title}}</h5></strong>
-              {{#ifEquals this.seller ../currentUser}}
+              {{#ifEquals this.seller ../currentSession.passport.user._json.email}}
                 <span class="badge badge-success">Interested Buyer</span>
               {{/ifEquals}}
-              {{#ifEquals this.interestedBuyer ../currentUser}}
+              {{#ifEquals this.interestedBuyer ../currentSession.passport.user._json.email}}
                 <span class="badge badge-info">Product Seller</span>
               {{/ifEquals}}
               <p class="chat_date">Last chatted: </p>
@@ -206,7 +206,7 @@ img{ max-width:100%;}
       </div>
     </div>
     <div class="mesgs">
-      <input id = "username" type="hidden" class="form-control disabled" value="{{currentUser}}">
+      <input id = "username" type="hidden" class="form-control disabled" value="{{currentSession.passport.user._json.email}}">
       <div class="msg_history">
         <div id="chatroom" class="outgoing_msg">
               <div id="feedback" class="sent_msg">
@@ -224,6 +224,9 @@ img{ max-width:100%;}
 </div>
 
 <script>
+  // Add current user to session
+  window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
+  window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
   // Setup listener for clicking the send-message button
   $("#send_message").click(() => {
     sendMessage();
@@ -245,17 +248,21 @@ img{ max-width:100%;}
   }
   
   // Setup socket.io client
-  var socket = io.connect();
+  var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
+  console.log(`/${window.sessionStorage.getItem('currentUsername')}`);
   socket.on('message', addMessages)
   socket.on('allMessages', addAllMessages)
   
-  // test two-way socket communication
-  socket.on('hi', () => {
-    console.log('socket event recd from chat.js in client');
-    socket.emit('send to chat.js');
-    socket.emit('send to app.js');
-    console.log('both events emitted from client');
-  });
+  // // test two-way socket communication
+  // socket.on('hi', () => {
+  //   console.log('socket event recd from chat.js in client');
+  //   socket.emit('send to chat.js');
+  //   socket.emit('send to app.js');
+  //   console.log('both events emitted from client');
+  // });
+
+  // var xs = io('/hello');
+  // xs.emit('hey');
 
   console.log('hel');
 
@@ -272,25 +279,18 @@ img{ max-width:100%;}
   }
 
   // Send message to client to save to DB and dispatch to both participants' chat rooms
-  function sendMessage(chatMessage) {
+  function sendMessage() {
       // Construct message object
       var threadId = window.sessionStorage.getItem('currentThread');
+      var currentUser = window.sessionStorage.getItem('currentUser');
+
       if (threadId) {
-        var chatMessage = {
-          name: $("#username").val(), chat: $("#message").val(), thread: threadId
+        var message = {
+          sender: currentUser, body: $("#message").val(), thread: threadId
         }
       }
-      var senderName = chatMessage.name;
-      var message = chatMessage.chat;
-      var threadId = chatMessage.thread;
-      
-      console.log(senderName, message, threadId);
-      
-      // Send via AJAX to server
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "/chat/messages", true);
-      xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhttp.send("senderName="+senderName+"&message="+message+"&threadId="+threadId);
+
+      socket.emit('message', message);
   }
   
   // display messages sent on message dialog

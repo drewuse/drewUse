@@ -25,34 +25,34 @@ var io = require('socket.io')(server);
 
 app.set('socketio', io);
 
-io.on('connect', (socket) => {
+// io.on('connect', (socket) => {
 
-	//default username
-	socket.username = "Anonymous"
+// 	//default username
+// 	socket.username = "Anonymous"
 
-    //listen on change_username
-    socket.on('change_username', (data) => {
-        socket.username = data.username
-    })
+//     //listen on change_username
+//     socket.on('change_username', (data) => {
+//         socket.username = data.username
+//     })
 
-    //listen on new_message
-    socket.on('new_message', (data) => {
-        //broadcast the new message
-        io.sockets.emit('new_message', {message : data.message, username : socket.username});
-    })
+//     //listen on new_message
+//     socket.on('new_message', (data) => {
+//         //broadcast the new message
+//         io.sockets.emit('new_message', {message : data.message, username : socket.username});
+//     })
 
-    //listen on typing
-    socket.on('typing', (data) => {
-    	socket.broadcast.emit('typing', {username : socket.username})
-    })
+//     //listen on typing
+//     socket.on('typing', (data) => {
+//     	socket.broadcast.emit('typing', {username : socket.username})
+//     })
 
-    // test two-way socket connection
-    socket.on('send to app.js', (data) => {
-      console.log('socket event recd from client in app.js');
-    })
+//     // test two-way socket connection
+//     socket.on('send to app.js', (data) => {
+//       console.log('socket event recd from client in app.js');
+//     })
 
-    // listen for messages
-})
+//     // listen for messages
+// })
 
 // view engine setup
 var handlebars = hbs.create({
