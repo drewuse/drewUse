@@ -86,7 +86,15 @@ function setupSocketListeners(req, res, next) {
       recipientUsername = message.recipient.match(/[^@]+/)[0];
       io.of(`/${username}`).emit('newMessage', message);
       io.of(`/${recipientUsername}`).emit('newMessage', message);
-    })
+    });
+
+    // Add get-thread listener
+    socket.on('getThread', threadId => {
+      chatData.find({_id: threadId})
+        .then(doc => {
+          userSocket.emit('displayThread', doc[0]);
+        });
+    });
   })
 
   next();
@@ -108,17 +116,6 @@ router.post('/newMessage', checkAuthentication, function(req,res){
   data.save((err, doc) => {
     res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
   });
-});
-
-
-router.post('/messages/getInfo', checkAuthentication, (req, res) => {
-  console.log(req.body.threadId);
-  chatData.find({_id: req.body.threadId})
-    .then(function(doc) {
-      // console.log(doc);
-      res.io.emit('allMessages', doc);
-    });
-
 });
 
 

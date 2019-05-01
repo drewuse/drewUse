@@ -252,7 +252,7 @@ img{ max-width:100%;}
   console.log(`/${window.sessionStorage.getItem('currentUsername')}`);
   sockets = io();
   socket.on('newMessage', addMessages)
-  sockets.on('allMessages', addAllMessages)
+  socket.on('displayThread', displayThread)
   
   // // test two-way socket communication
   // socket.on('hi', () => {
@@ -276,7 +276,7 @@ img{ max-width:100%;}
     $(`.chat_people[threadId='${threadId}']`).addClass('active_chat');
     $(`.chat_people[threadId!='${threadId}']`).removeClass('active_chat');
 
-    sendInfoForMessages(threadId);
+    socket.emit('getThread', threadId);
   }
 
   // Send message to client to save to DB and dispatch to both participants' chat rooms
@@ -300,31 +300,22 @@ img{ max-width:100%;}
       $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
       $("#message").val(" ");
   }
-  function addAllMessages(message){
-      if (message[0].interestedBuyer === window.sessionStorage.getItem('currentUser')) {
-       var userChattingWith = message[0].seller;
+  function displayThread(thread){
+      if (thread.interestedBuyer === window.sessionStorage.getItem('currentUser')) {
+       var userChattingWith = thread.seller;
       } else {
-       var userChattingWith = message[0].interestedBuyer;
+       var userChattingWith = thread.interestedBuyer;
       }
       window.sessionStorage.setItem('userChattingWith', userChattingWith);
       console.log(`chatting with ${window.sessionStorage.getItem('userChattingWith')}`);
-      var messagesArray= message[0].messages;
-      var i;
-      for (i in messagesArray) {
-        console.log(JSON.stringify(messagesArray[i]));
-        message=  JSON.stringify(messagesArray[i].message);
-        byWho = JSON.stringify(messagesArray[i].byWho);
+      for (var i in thread.messages) {
+        console.log(JSON.stringify(thread.messages[i]));
+        message=  JSON.stringify(thread.messages[i].message);
+        byWho = JSON.stringify(thread.messages[i].byWho);
         $("#chatroom").append("<p class='message'>"+eval(byWho)+": "+eval(message)+"</p>");
       }
 
       $("#message").val(" ");
     }
-  // sends get request to server to get thread messages when the radio button is selected
-  function sendInfoForMessages(threadId){
-      console.log("Inside getMessages:",threadId);
-      var xhttp = new XMLHttpRequest();
-      xhttp.open('POST', '/chat/messages/getInfo', true);
-      xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhttp.send('threadId='+threadId);
-  }
+    
 </script>
