@@ -6,7 +6,6 @@ var chatData = require('../models/chat_model');
 var bodyParser = require('body-parser')
 var $ = require("jquery");
 var Long = require('mongodb').Long;
-var current_millies = new Date().getTime();
 var querystring = require('querystring');
 
 
@@ -81,9 +80,14 @@ function setupSocketListeners(req, res, next) {
 
     // Add send-message listener
     socket.on('newMessage', message => {
-      // add to db and emit to receiving user's namespace
+      var {sender, recipient, body, thread} = message;
       console.log('Message received:', message);
-      recipientUsername = message.recipient.match(/[^@]+/)[0];
+      recipientUsername = recipient.match(/[^@]+/)[0];
+      // Add message to DB
+      var current_millies = new Date().getTime();
+      var current_timestamp = Long.fromNumber(current_millies);
+      chatData.update({ _id: thread}, {$push:{messages:[{message:body, byWho:sender, timestamp: current_timestamp}]}}).exec();
+      // Emit to both participants' socket namespaces
       io.of(`/${username}`).emit('newMessage', message);
       io.of(`/${recipientUsername}`).emit('newMessage', message);
     });
@@ -95,6 +99,7 @@ function setupSocketListeners(req, res, next) {
           userSocket.emit('displayThread', doc[0]);
         });
     });
+
   })
 
   next();
@@ -117,16 +122,6 @@ router.post('/newMessage', checkAuthentication, function(req,res){
     res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
   });
 });
-
-
-router.post('/messages', checkAuthentication, async (req, res) => {
-  var current_timestamp = Long.fromNumber(current_millies);
-  console.log("post messages route");
-  console.log(req.body);
-  chatData.update({ _id: req.body.threadId}, {$push:{messages:[{message:req.body.message, byWho:req.body.senderName, timestamp: current_timestamp}]}}).exec();
-  res.io.emit('message', req.body);
-
-})
 
 //authenticate a user is logged in
 function checkAuthentication(req,res,next){
