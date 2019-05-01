@@ -40,25 +40,17 @@ router.get('/', checkAuthentication, setupSocketListeners, function(req, res, ne
 function setupSocketListeners(req, res, next) {
   // Setup socket.io connections for real-time chat
   var io = req.app.get('socketio');
+
+  // // TEST Two-way socket communication
   // io.on('connection', (socket) => {
-  //   // Prevent duplicate emits by removing the connection listeners for any subsequent connections with the same ID
-  //   /* This hack was inspired by this SO answer: https://stackoverflow.com/a/43685951 */
-  //   root_socket_ids.push(socket.id);
-  //   if (root_socket_ids[root_socket_ids.length-1] === socket.id) {
-  //     io.removeAllListeners('connection');
-  //   }
-
-  //   console.log('reached here');
-
-  //   // // test two-way socket connection
-  //   // console.log('Emitting from chat.js ...');
-  //   // socket.emit('hi');
-  //   // socket.on('send to chat.js', (data) => {
-  //   //   console.log('socket event recd from client in chat.js');
-  //   // });
+  //   console.log('Emitting from chat.js ...');
+  //   socket.emit('hi');
+  //   socket.on('send to chat.js', (data) => {
+  //     console.log('socket event recd from client in chat.js');
+  //   });
   // })
 
-  // Initialize namespace for user
+  // // TEST Namespaces
   // var x = io.of('/hello');
   // x.on('connect', socket => {
   //   console.log('hhhdhdhdhdh');
@@ -66,7 +58,7 @@ function setupSocketListeners(req, res, next) {
   //   //   console.log('ppppppp');
   //   // })
   // })
-
+  
   var username = req.session.passport.user._json.email.match(/[^@]+/)[0];
   var userSocket = io.of(`/${username}`);
   userSocket.on('connect', socket => {
@@ -76,7 +68,7 @@ function setupSocketListeners(req, res, next) {
     if (user_socket_ids[user_socket_ids.length-1] === socket.id) {
       userSocket.removeAllListeners('connect');
     }
-    console.log(`User ${req.session.passport.user._json.email} namespace connected.`);
+    // console.log(`User ${req.session.passport.user._json.email} namespace connected.`);
 
     // Add send-message listener
     socket.on('newMessage', message => {
@@ -124,13 +116,13 @@ router.post('/newMessage', checkAuthentication, function(req,res){
 
 //authenticate a user is logged in
 function checkAuthentication(req,res,next){
-    if(req.isAuthenticated()){
-        //req.isAuthenticated() will return true if user is logged in
-        next();
-    } else{
-      req.session.authorigin = 'chat';
-      res.redirect('/auth/google/callback')
-    }
+  if(req.isAuthenticated()){
+      //req.isAuthenticated() will return true if user is logged in
+      next();
+  } else{
+    req.session.authorigin = 'chat';
+    res.redirect('/auth/google/callback')
+  }
 }
 
 

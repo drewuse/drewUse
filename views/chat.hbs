@@ -227,45 +227,50 @@ img{ max-width:100%;}
   // Add current user to session
   window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
   window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
+  
   // Setup listener for clicking the send-message button
   $("#send_message").click(() => {
     sendMessage();
   });
+  
   // Setup listener for pressing 'enter' in the message input field
   $('#message').keyup(function(e){
     if(e.keyCode == 13) {
       sendMessage();
     }
   });
+  
   // Handle selection of a specific thread
   $('.chat_people').click(function(){
     console.log('Thread Clicked');
     var threadId = $(this).attr('threadId');  // Get thread id
     selectThread(threadId);
   });
+  
+  // Handle pre-selection of a thread upon load
   if ('{{preselectedThread}}') {
     selectThread('{{preselectedThread}}');
   }
   
   // Setup socket.io client
   var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
-  console.log(`/${window.sessionStorage.getItem('currentUsername')}`);
-  sockets = io();
+
+  // Add listeners
   socket.on('newMessage', appendMessage)
   socket.on('displayThread', displayThread)
   
-  // // test two-way socket communication
-  // socket.on('hi', () => {
+  // // TEST Two-way socket communication
+  // socketRoot = io();
+  // socketRoot.on('hi', () => {
   //   console.log('socket event recd from chat.js in client');
-  //   socket.emit('send to chat.js');
-  //   socket.emit('send to app.js');
+  //   socketRoot.emit('send to chat.js');
+  //   socketRoot.emit('send to app.js');
   //   console.log('both events emitted from client');
   // });
 
+  // // TEST Namespaces
   // var xs = io('/hello');
   // xs.emit('hey');
-
-  console.log('hel');
 
   function selectThread(threadId) {
     console.log('Thread Selected');
@@ -281,41 +286,41 @@ img{ max-width:100%;}
 
   // Send message to client to save to DB and dispatch to both participants' chat rooms
   function sendMessage() {
-      // Construct message object
-      var threadId = window.sessionStorage.getItem('currentThread');
-      var currentUser = window.sessionStorage.getItem('currentUser');
+    // Construct message object
+    var threadId = window.sessionStorage.getItem('currentThread');
+    var currentUser = window.sessionStorage.getItem('currentUser');
 
-      if (threadId) {
-        var message = {
-          byWho: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), message: $("#message").val(), thread: threadId
-        }
+    if (threadId) {
+      var message = {
+        byWho: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), message: $("#message").val(), thread: threadId
       }
+    }
 
-      socket.emit('newMessage', message);
+    socket.emit('newMessage', message);
   }
   
   // display messages sent on message dialog
   function appendMessage(message){
-      // Add new message to chat room
-      $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
-      $("#message").val(" ");
+    // Add new message to chat room
+    $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
+    $("#message").val(" ");
   }
 
   function displayThread(thread){
-      // Add thread constants to session
-      if (thread.interestedBuyer === window.sessionStorage.getItem('currentUser')) {
-       var userChattingWith = thread.seller;
-      } else {
-       var userChattingWith = thread.interestedBuyer;
-      }
-      window.sessionStorage.setItem('userChattingWith', userChattingWith);
-      
-      // Add all messages to the chat window
-      for (var i in thread.messages) {
-        appendMessage(thread.messages[i]);
-      }
-
-      $("#message").val(" ");
+    // Add thread constants to session
+    if (thread.interestedBuyer === window.sessionStorage.getItem('currentUser')) {
+     var userChattingWith = thread.seller;
+    } else {
+     var userChattingWith = thread.interestedBuyer;
     }
+    window.sessionStorage.setItem('userChattingWith', userChattingWith);
+    
+    // Add all messages to the chat window
+    for (var i in thread.messages) {
+      appendMessage(thread.messages[i]);
+    }
+
+    $("#message").val(" ");
+  }
 
 </script>
