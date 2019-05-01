@@ -13,7 +13,6 @@ var querystring = require('querystring');
 
 mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
 
-var root_socket_ids = [];
 var user_socket_ids = [];
 
 
@@ -96,22 +95,31 @@ function setupSocketListeners(req, res, next) {
   next();
 }
 
-router.post('/newMessage', checkAuthentication, function(req,res){
-  var current_timestamp = Long.fromNumber(current_millies);
-  var date = new Date(current_millies);
-  var dateReadable = date.toString();
-  var chat = {
-    item: mongoose.Types.ObjectId(req.body.itemId),
-    seller: req.body.seller,
-    interestedBuyer: req.session.passport.user._json.email,
-    allParticipants:[ {email: req.session.passport.user._json.email}, {email: req.body.seller} ],
-    dateChatCreated: current_timestamp,
-    dateChatCreatedComputed: dateReadable
-  }
-  var data = new chatData(chat);
-  data.save((err, doc) => {
-    res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
-  });
+router.post('/openThread', checkAuthentication, function(req,res){
+  chatData.findOne({item: req.body.itemId, interestedBuyer:req.session.passport.user._json.email}).then(doc => {
+    if (!doc) {
+      // Start a new thread
+      var current_millies = new Date().getTime();
+      var current_timestamp = Long.fromNumber(current_millies);
+      var date = new Date(current_millies);
+      var dateReadable = date.toString();
+      var chat = {
+        item: mongoose.Types.ObjectId(req.body.itemId),
+        seller: req.body.seller,
+        interestedBuyer: req.session.passport.user._json.email,
+        allParticipants:[ {email: req.session.passport.user._json.email}, {email: req.body.seller} ],
+        dateChatCreated: current_timestamp,
+        dateChatCreatedComputed: dateReadable
+      }
+      var data = new chatData(chat);
+      data.save((err, doc) => {
+        res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+      });
+    } else {
+      // Open the existing thread
+      res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+    }
+  })
 });
 
 //authenticate a user is logged in

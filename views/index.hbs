@@ -130,7 +130,7 @@
             {{#if listingIsSameAsUser}}
 
             {{else}}
-            <form action="/chat/newMessage" method="POST">
+            <form action="/chat/openThread" method="POST">
               <input class="card-text" name="itemId" value="{{this._id}}" style="display:none;"></input>
               <input class="card-text" name="seller" value="{{this.postedBy}}" style="display:none;"></input>
               <center><button type="submit" class="btn btn-success">I'm Interested</button></center>

@@ -225,6 +225,13 @@ img{ max-width:100%;}
 </div>
 
 <script>
+  // Setup socket.io client
+  var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
+
+  // Add listeners
+  socket.on('newMessage', appendMessage)
+  socket.on('displayThread', displayThread)
+
   // Add current user to session
   window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
   window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
@@ -252,13 +259,6 @@ img{ max-width:100%;}
   if ('{{preselectedThread}}') {
     selectThread('{{preselectedThread}}');
   }
-  
-  // Setup socket.io client
-  var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
-
-  // Add listeners
-  socket.on('newMessage', appendMessage)
-  socket.on('displayThread', displayThread)
   
   // // TEST Two-way socket communication
   // socketRoot = io();
