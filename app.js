@@ -23,33 +23,15 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 
-// io.on('connection', function(socket){
-//   socket.on('chat message', function(msg){
-//     io.emit('chat message', msg);
-//   });
-// });
-io.on('connection', (socket) => {
-	console.log('New user connected')
+app.set('socketio', io);
 
-	//default username
-	socket.username = "Anonymous"
+// // TEST Two-way socket communication
+// io.on('connect', (socket) => {
 
-    //listen on change_username
-    socket.on('change_username', (data) => {
-        socket.username = data.username
-    })
-
-    //listen on new_message
-    socket.on('new_message', (data) => {
-        //broadcast the new message
-        io.sockets.emit('new_message', {message : data.message, username : socket.username});
-    })
-
-    //listen on typing
-    socket.on('typing', (data) => {
-    	socket.broadcast.emit('typing', {username : socket.username})
-    })
-})
+//     socket.on('send to app.js', (data) => {
+//       console.log('socket event recd from client in app.js');
+//     })
+// })
 
 // view engine setup
 var handlebars = hbs.create({

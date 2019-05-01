@@ -225,31 +225,53 @@ img{ max-width:100%;}
 </div>
 
 <script>
-  var socket = io.connect();
-  $(() => {
-      // Setup listener for clicking the send-message button
-      $("#send_message").click(() => {
-        sendMessage();
-      });
-      // Setup listener for pressing 'enter' in the message input field
-      $('#message').keyup(function(e){
-        if(e.keyCode == 13) {
-          sendMessage();
-        }
-      });
-      // if a thread is selected show the messages specific to that thread
-      $('.chat_people').click(function(){
-        console.log('Thread Clicked');
-        var threadId = $(this).attr('threadId');  // Get thread id
-        selectThread(threadId);
-      })
-    if ('{{preselectedThread}}') {
-      selectThread('{{preselectedThread}}');
+  // Add current user to session
+  window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
+  window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
+  
+  // Setup listener for clicking the send-message button
+  $("#send_message").click(() => {
+    sendMessage();
+  });
+  
+  // Setup listener for pressing 'enter' in the message input field
+  $('#message').keyup(function(e){
+    if(e.keyCode == 13) {
+      sendMessage();
     }
-  })
-  // when messages are sent send to function to display
-  socket.on('message', addMessages)
-  socket.on('allMessages', addAllMessages)
+  });
+  
+  // Handle selection of a specific thread
+  $('.chat_people').click(function(){
+    console.log('Thread Clicked');
+    var threadId = $(this).attr('threadId');  // Get thread id
+    selectThread(threadId);
+  });
+  
+  // Handle pre-selection of a thread upon load
+  if ('{{preselectedThread}}') {
+    selectThread('{{preselectedThread}}');
+  }
+  
+  // Setup socket.io client
+  var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
+
+  // Add listeners
+  socket.on('newMessage', appendMessage)
+  socket.on('displayThread', displayThread)
+  
+  // // TEST Two-way socket communication
+  // socketRoot = io();
+  // socketRoot.on('hi', () => {
+  //   console.log('socket event recd from chat.js in client');
+  //   socketRoot.emit('send to chat.js');
+  //   socketRoot.emit('send to app.js');
+  //   console.log('both events emitted from client');
+  // });
+
+  // // TEST Namespaces
+  // var xs = io('/hello');
+  // xs.emit('hey');
 
   function selectThread(threadId) {
     console.log('Thread Selected');
@@ -260,54 +282,46 @@ img{ max-width:100%;}
     $(`.chat_people[threadId='${threadId}']`).addClass('active_chat');
     $(`.chat_people[threadId!='${threadId}']`).removeClass('active_chat');
 
-    sendInfoForMessages(threadId);
+    socket.emit('getThread', threadId);
   }
 
   // Send message to client to save to DB and dispatch to both participants' chat rooms
-  function sendMessage(chatMessage) {
-      // Construct message object
-      var threadId = window.sessionStorage.getItem('currentThread');
-      if (threadId) {
-        var chatMessage = {
-          name: $("#username").val(), chat: $("#message").val(), thread: threadId
-        }
+  function sendMessage() {
+    // Construct message object
+    var threadId = window.sessionStorage.getItem('currentThread');
+    var currentUser = window.sessionStorage.getItem('currentUser');
+
+    if (threadId) {
+      var message = {
+        byWho: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), message: $("#message").val(), thread: threadId
       }
-      var senderName = chatMessage.name;
-      var message = chatMessage.chat;
-      var threadId = chatMessage.thread;
-      
-      console.log(senderName, message, threadId);
-      
-      // Send via AJAX to server
-      var xhttp = new XMLHttpRequest();
-      xhttp.open("POST", "/chat/messages", true);
-      xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhttp.send("senderName="+senderName+"&message="+message+"&threadId="+threadId);
+    }
+
+    socket.emit('newMessage', message);
   }
   
   // display messages sent on message dialog
-  function addMessages(message){
-      $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
-      $("#message").val(" ");
+  function appendMessage(message){
+    // Add new message to chat room
+    $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
+    $("#message").val(" ");
   }
-  function addAllMessages(message){
-      var messagesArray= message[0].messages;
-      var i;
-      for (i in messagesArray) {
-        console.log(JSON.stringify(messagesArray[i]));
-        message=  JSON.stringify(messagesArray[i].message);
-        byWho = JSON.stringify(messagesArray[i].byWho);
-        $("#chatroom").append("<p class='message'>"+eval(byWho)+": "+eval(message)+"</p>");
-      }
 
-      $("#message").val(" ");
+  function displayThread(thread){
+    // Add thread constants to session
+    if (thread.interestedBuyer === window.sessionStorage.getItem('currentUser')) {
+     var userChattingWith = thread.seller;
+    } else {
+     var userChattingWith = thread.interestedBuyer;
     }
-  // sends get request to server to get thread messages when the radio button is selected
-  function sendInfoForMessages(threadId){
-      console.log("Inside getMessages:",threadId);
-      var xhttp = new XMLHttpRequest();
-      xhttp.open('POST', '/chat/messages/getInfo', true);
-      xhttp.setRequestHeader("Content-type","application/x-www-form-urlencoded");
-      xhttp.send('threadId='+threadId);
+    window.sessionStorage.setItem('userChattingWith', userChattingWith);
+    
+    // Add all messages to the chat window
+    for (var i in thread.messages) {
+      appendMessage(thread.messages[i]);
+    }
+
+    $("#message").val(" ");
   }
+
 </script>
