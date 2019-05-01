@@ -80,8 +80,7 @@ function setupSocketListeners(req, res, next) {
 
     // Add send-message listener
     socket.on('newMessage', message => {
-      var {sender, recipient, body, thread} = message;
-      console.log('Message received:', message);
+      var {byWho:sender, recipient, message:body, thread} = message;
       recipientUsername = recipient.match(/[^@]+/)[0];
       // Add message to DB
       var current_millies = new Date().getTime();

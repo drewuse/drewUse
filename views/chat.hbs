@@ -251,7 +251,7 @@ img{ max-width:100%;}
   var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
   console.log(`/${window.sessionStorage.getItem('currentUsername')}`);
   sockets = io();
-  socket.on('newMessage', addMessages)
+  socket.on('newMessage', appendMessage)
   socket.on('displayThread', displayThread)
   
   // // test two-way socket communication
@@ -287,7 +287,7 @@ img{ max-width:100%;}
 
       if (threadId) {
         var message = {
-          sender: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), body: $("#message").val(), thread: threadId
+          byWho: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), message: $("#message").val(), thread: threadId
         }
       }
 
@@ -295,27 +295,27 @@ img{ max-width:100%;}
   }
   
   // display messages sent on message dialog
-  function addMessages(message){
-      console.log(`updating message from ${message.sender}`);
-      $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
+  function appendMessage(message){
+      // Add new message to chat room
+      $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
       $("#message").val(" ");
   }
+
   function displayThread(thread){
+      // Add thread constants to session
       if (thread.interestedBuyer === window.sessionStorage.getItem('currentUser')) {
        var userChattingWith = thread.seller;
       } else {
        var userChattingWith = thread.interestedBuyer;
       }
       window.sessionStorage.setItem('userChattingWith', userChattingWith);
-      console.log(`chatting with ${window.sessionStorage.getItem('userChattingWith')}`);
+      
+      // Add all messages to the chat window
       for (var i in thread.messages) {
-        console.log(JSON.stringify(thread.messages[i]));
-        message=  JSON.stringify(thread.messages[i].message);
-        byWho = JSON.stringify(thread.messages[i].byWho);
-        $("#chatroom").append("<p class='message'>"+eval(byWho)+": "+eval(message)+"</p>");
+        appendMessage(thread.messages[i]);
       }
 
       $("#message").val(" ");
     }
-    
+
 </script>
