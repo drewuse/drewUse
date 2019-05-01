@@ -78,10 +78,14 @@ function setupSocketListeners(req, res, next) {
       userSocket.removeAllListeners('connect');
     }
     console.log(`User ${req.session.passport.user._json.email} namespace connected.`);
-    // Add message listener
-    socket.on('message', data => {
+
+    // Add send-message listener
+    socket.on('newMessage', message => {
       // add to db and emit to receiving user's namespace
-      console.log('Message received:', data);
+      console.log('Message received:', message);
+      recipientUsername = message.recipient.match(/[^@]+/)[0];
+      io.of(`/${username}`).emit('newMessage', message);
+      io.of(`/${recipientUsername}`).emit('newMessage', message);
     })
   })
 

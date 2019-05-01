@@ -250,8 +250,9 @@ img{ max-width:100%;}
   // Setup socket.io client
   var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
   console.log(`/${window.sessionStorage.getItem('currentUsername')}`);
-  socket.on('message', addMessages)
-  socket.on('allMessages', addAllMessages)
+  sockets = io();
+  socket.on('newMessage', addMessages)
+  sockets.on('allMessages', addAllMessages)
   
   // // test two-way socket communication
   // socket.on('hi', () => {
@@ -286,19 +287,27 @@ img{ max-width:100%;}
 
       if (threadId) {
         var message = {
-          sender: currentUser, body: $("#message").val(), thread: threadId
+          sender: currentUser, recipient: window.sessionStorage.getItem('userChattingWith'), body: $("#message").val(), thread: threadId
         }
       }
 
-      socket.emit('message', message);
+      socket.emit('newMessage', message);
   }
   
   // display messages sent on message dialog
   function addMessages(message){
+      console.log(`updating message from ${message.sender}`);
       $("#chatroom").append("<p class='message'>" + $("#username").val()+ ": " + $("#message").val()+ "</p>")
       $("#message").val(" ");
   }
   function addAllMessages(message){
+      if (message[0].interestedBuyer === window.sessionStorage.getItem('currentUser')) {
+       var userChattingWith = message[0].seller;
+      } else {
+       var userChattingWith = message[0].interestedBuyer;
+      }
+      window.sessionStorage.setItem('userChattingWith', userChattingWith);
+      console.log(`chatting with ${window.sessionStorage.getItem('userChattingWith')}`);
       var messagesArray= message[0].messages;
       var i;
       for (i in messagesArray) {
