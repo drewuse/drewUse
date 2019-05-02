@@ -115,9 +115,9 @@
   </div>
 </div>
 <!-- LISTING CARDS -->
-{{#if currentSession.passport}}
-  <div class="row">
-      {{# each items }}
+<div class="row">
+  {{# each items }}
+    {{#ifNotEquals this.postedBy ../currentSession.passport.user._json.email}}
       <div class="col-sm-3" style="margin-top:20px">
         <div class="card" >
           <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
@@ -127,45 +127,18 @@
             <p class="card-text" name="description">{{ this.description }}</p>
             <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
             <hr/>
-            {{#if listingIsSameAsUser}}
-
-            {{else}}
-            <form action="/chat/openThread" method="POST">
+            <form action="/chat/openThread">
               <input class="card-text" name="itemId" value="{{this._id}}" style="display:none;"></input>
               <input class="card-text" name="seller" value="{{this.postedBy}}" style="display:none;"></input>
               <center><button type="submit" class="btn btn-success">I'm Interested</button></center>
             </form>
-            {{/if}}
           </div>
           <div class="card-footer">
            <small class="text-muted">{{ this.datePostedComputed }}</small>
          </div>
         </div>
       </div>
-      {{/each}}
-  </div>
-{{else}}
-  <div class="row">
-      {{# each items }}
-      <div class="col-sm-3" style="margin-top:20px">
-        <div class="card" >
-          <img class="card-img-top" src="{{ this.image_url }}" alt="Card image cap" style="height:10vw;">
-          <div class="card-body">
-            <h5 class="card-title" name="title">{{ this.title }}</h5>
-            <p name="price">Price: ${{ this.price }}</p>
-            <p class="card-text" name="description">{{ this.description }}</p>
-            <p name="condition">A <strong>{{ this.booktype }}</strong> in <strong>{{ this.condition }}</strong> condition.</strong></p>
-            <hr/>
-            <form>
-            <center><button class="btn btn-success disabled">I'm Interested</button></center>
-          </form>
-          </div>
-          <div class="card-footer">
-           <small class="text-muted">{{ this.datePostedComputed }}</small>
-         </div>
-        </div>
-      </div>
-      {{/each}}
-  </div>
-{{/if}}
+    {{/ifNotEquals}}
+  {{/each}}
+</div>
 <br>
