@@ -101,32 +101,43 @@ function setupSocketListeners(req, res, next) {
 router.get('/openThread', (req, res, next) => {
     req.session.authorigin = 'chat/openThread?' + querystring.stringify(req.query);
     next();
-  }, checkAuthentication, function(req,res){
+  }, checkAuthentication, function(req,res) {
     var {itemId, seller} = req.query;
-    chatData.findOne({item: itemId, interestedBuyer:req.session.passport.user._json.email}).then(doc => {
+    var currentUser = req.session.passport.user._json.email;
+    // Ensure the seller is not opening a thread on their own listing
+    itemData.findOne({_id: itemId, postedBy:currentUser}).then(doc => {
       if (!doc) {
-        // Start a new thread
-        var current_millies = new Date().getTime();
-        var current_timestamp = Long.fromNumber(current_millies);
-        var date = new Date(current_millies);
-        var dateReadable = date.toString();
-        var chat = {
-          item: mongoose.Types.ObjectId(itemId),
-          seller: seller,
-          interestedBuyer: req.session.passport.user._json.email,
-          allParticipants:[ {email: req.session.passport.user._json.email}, {email: seller} ],
-          dateChatCreated: current_timestamp,
-          dateChatCreatedComputed: dateReadable
-        }
-        var data = new chatData(chat);
-        data.save((err, doc) => {
-          res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+        // The seller ≠ the buyer
+        // Create a new thread or open the existing one
+        chatData.findOne({item: itemId, interestedBuyer:currentUser}).then(doc => {
+          if (!doc) {
+            // Start a new thread
+            var current_millies = new Date().getTime();
+            var current_timestamp = Long.fromNumber(current_millies);
+            var date = new Date(current_millies);
+            var dateReadable = date.toString();
+            var chat = {
+              item: mongoose.Types.ObjectId(itemId),
+              seller: seller,
+              interestedBuyer: req.session.passport.user._json.email,
+              allParticipants:[ {email: currentUser}, {email: seller} ],
+              dateChatCreated: current_timestamp,
+              dateChatCreatedComputed: dateReadable
+            }
+            var data = new chatData(chat);
+            data.save((err, doc) => {
+              res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+            });
+          } else {
+            // Open the existing thread
+            res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+          }
         });
       } else {
-        // Open the existing thread
-        res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+        // The seller = the buyer
+        res.redirect('/?' + querystring.stringify({'alert':"You own this listing! You cannot buy your own listing!"}));
       }
-    })
+    });
 });
 
 //authenticate a user is logged in

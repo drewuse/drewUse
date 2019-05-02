@@ -141,4 +141,9 @@
     {{/ifNotEquals}}
   {{/each}}
 </div>
-<br>
+
+{{#if queryParams.alert}}
+  <script>
+    alert('{{queryParams.alert}}');
+  </script>
+{{/if}}
