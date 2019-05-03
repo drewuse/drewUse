@@ -216,7 +216,7 @@ img{ max-width:100%;}
       </div>
       <div id="input_zone" class="type_msg">
           <div class="input_msg_write">
-            <input id="message" type="text" class="write_msg" placeholder="Type a message" />
+            <input id="message" type="text" class="write_msg" placeholder="Type a message..." />
             <button id="send_message" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           </div>
       </div>
@@ -301,7 +301,7 @@ img{ max-width:100%;}
   function appendMessage(message){
     // Add new message to chat room
     $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
-    $("#message").val(" ");
+    $("#message").val("");
   }
 
   function displayThread(thread){
@@ -317,8 +317,6 @@ img{ max-width:100%;}
     for (var i in thread.messages) {
       appendMessage(thread.messages[i]);
     }
-
-    $("#message").val(" ");
   }
 
 </script>
