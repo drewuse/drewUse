@@ -216,7 +216,7 @@ img{ max-width:100%;}
       </div>
       <div id="input_zone" class="type_msg">
           <div class="input_msg_write">
-            <input id="message" type="text" class="write_msg" placeholder="Type a message" />
+            <input id="message" type="text" class="write_msg" placeholder="Type a message..." />
             <button id="send_message" class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           </div>
       </div>
@@ -225,16 +225,15 @@ img{ max-width:100%;}
 </div>
 
 <script>
+  // Add current user to session
+  window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
+  window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
   // Setup socket.io client
   var socket = io.connect(`/${window.sessionStorage.getItem('currentUsername')}`);
 
   // Add listeners
   socket.on('newMessage', appendMessage)
   socket.on('displayThread', displayThread)
-
-  // Add current user to session
-  window.sessionStorage.setItem('currentUser', '{{currentSession.passport.user._json.email}}');
-  window.sessionStorage.setItem('currentUsername', window.sessionStorage.getItem('currentUser').match(/[^@]+/)[0]);
   
   // Setup listener for clicking the send-message button
   $("#send_message").click(() => {
@@ -249,8 +248,7 @@ img{ max-width:100%;}
   });
   
   // Handle selection of a specific thread
-  $('.chat_people').click(function(){
-    console.log('Thread Clicked');
+  $('.chat_people').click(function() {
     var threadId = $(this).attr('threadId');  // Get thread id
     selectThread(threadId);
   });
@@ -274,7 +272,6 @@ img{ max-width:100%;}
   // xs.emit('hey');
 
   function selectThread(threadId) {
-    console.log('Thread Selected');
     // Save thread id to session storage
     window.sessionStorage.setItem('currentThread', threadId); // set thread id in session
     $("#chatroom").empty();
@@ -304,7 +301,7 @@ img{ max-width:100%;}
   function appendMessage(message){
     // Add new message to chat room
     $("#chatroom").append(`<p class='message'>${message.byWho}: ${message.message}</p>`)
-    $("#message").val(" ");
+    $("#message").val("");
   }
 
   function displayThread(thread){
@@ -320,8 +317,6 @@ img{ max-width:100%;}
     for (var i in thread.messages) {
       appendMessage(thread.messages[i]);
     }
-
-    $("#message").val(" ");
   }
 
 </script>

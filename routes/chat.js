@@ -21,7 +21,10 @@ router.use(bodyParser.urlencoded({ extended: false }))
 
 
 /* GET home page. */
-router.get('/', checkAuthentication, setupSocketListeners, function(req, res, next) {
+router.get('/', (req, res, next) => {
+    req.session.authorigin = 'chat?' + querystring.stringify(req.query);
+    next();
+  }, checkAuthentication, setupSocketListeners, function(req, res, next) {
   // Setup chat data and render chat page
   preselectedThread = req.query.preselectedThread ? req.query.preselectedThread : '';
   chatData.find({allParticipants:
@@ -95,40 +98,53 @@ function setupSocketListeners(req, res, next) {
   next();
 }
 
-router.post('/openThread', checkAuthentication, function(req,res){
-  chatData.findOne({item: req.body.itemId, interestedBuyer:req.session.passport.user._json.email}).then(doc => {
-    if (!doc) {
-      // Start a new thread
-      var current_millies = new Date().getTime();
-      var current_timestamp = Long.fromNumber(current_millies);
-      var date = new Date(current_millies);
-      var dateReadable = date.toString();
-      var chat = {
-        item: mongoose.Types.ObjectId(req.body.itemId),
-        seller: req.body.seller,
-        interestedBuyer: req.session.passport.user._json.email,
-        allParticipants:[ {email: req.session.passport.user._json.email}, {email: req.body.seller} ],
-        dateChatCreated: current_timestamp,
-        dateChatCreatedComputed: dateReadable
+router.get('/openThread', (req, res, next) => {
+    req.session.authorigin = 'chat/openThread?' + querystring.stringify(req.query);
+    next();
+  }, checkAuthentication, function(req,res) {
+    var {itemId, seller} = req.query;
+    var currentUser = req.session.passport.user._json.email;
+    // Ensure the seller is not opening a thread on their own listing
+    itemData.findOne({_id: itemId, postedBy:currentUser}).then(doc => {
+      if (!doc) {
+        // The seller ≠ the buyer
+        // Create a new thread or open the existing one
+        chatData.findOne({item: itemId, interestedBuyer:currentUser}).then(doc => {
+          if (!doc) {
+            // Start a new thread
+            var current_millies = new Date().getTime();
+            var current_timestamp = Long.fromNumber(current_millies);
+            var date = new Date(current_millies);
+            var dateReadable = date.toString();
+            var chat = {
+              item: mongoose.Types.ObjectId(itemId),
+              seller: seller,
+              interestedBuyer: req.session.passport.user._json.email,
+              allParticipants:[ {email: currentUser}, {email: seller} ],
+              dateChatCreated: current_timestamp,
+              dateChatCreatedComputed: dateReadable
+            }
+            var data = new chatData(chat);
+            data.save((err, doc) => {
+              res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+            });
+          } else {
+            // Open the existing thread
+            res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
+          }
+        });
+      } else {
+        // The seller = the buyer
+        res.redirect('/?' + querystring.stringify({'alert':"You own this listing! You cannot buy your own listing!"}));
       }
-      var data = new chatData(chat);
-      data.save((err, doc) => {
-        res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
-      });
-    } else {
-      // Open the existing thread
-      res.redirect('/chat?' + querystring.stringify({'preselectedThread':doc.id}));
-    }
-  })
+    });
 });
 
 //authenticate a user is logged in
 function checkAuthentication(req,res,next){
   if(req.isAuthenticated()){
-      //req.isAuthenticated() will return true if user is logged in
       next();
   } else{
-    req.session.authorigin = 'chat';
     res.redirect('/auth/google/callback')
   }
 }

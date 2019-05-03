@@ -29,7 +29,7 @@ router.get('/' ,function(req, res, next) {
   }
   results.find({sold:false}).sort( { datePosted: -1 } )
   	.then(function(doc) {
-      res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session, filters:filters});
+      res.render('index', { title: 'DrewUse', items:doc, currentSession: req.session, filters:filters, queryParams:req.query});
     });
 });
 
