@@ -11,7 +11,7 @@ var itemData = require('../models/item_model');
 // var dbConnect='mongodb://'+dbLoginData.username+':'+dbLoginData.password+"@ds127802.mlab.com:27802/"+dbLoginData.username;
 
 
-mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
+mongoose.connect('mongodb+srv://jcruz:MJVMFPbhxFyNTe7h@cluster0.ksozamc.mongodb.net/?retryWrites=true&w=majority');
 
 
 /* GET home page. */

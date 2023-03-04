@@ -5,7 +5,7 @@ var itemData = require('../models/item_model');
 var profileData = require('../models/profileModel');
 
 
-mongoose.connect('mongodb://heroku_v3r3b96l:rdihvrpq58acjbaole0f7jbo7c@ds127802.mlab.com:27802/heroku_v3r3b96l');
+mongoose.connect('mongodb+srv://jcruz:MJVMFPbhxFyNTe7h@cluster0.ksozamc.mongodb.net/?retryWrites=true&w=majority');
 
 // get request from profile
   // extends to get request and post request to listings
